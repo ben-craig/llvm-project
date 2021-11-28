@@ -7424,6 +7424,7 @@ SelectionDAGBuilder::lowerInvokable(TargetLowering::CallLoweringInfo &CLI,
     (void)getRoot();
     DAG.setRoot(lowerStartEH(getControlRoot(), EHPadBB, BeginLabel));
     CLI.setChain(getRoot());
+    CLI.UnwindDest = DAG.getBasicBlock(FuncInfo.MBBMap[EHPadBB]);
   }
 
   const TargetLowering &TLI = DAG.getTargetLoweringInfo();

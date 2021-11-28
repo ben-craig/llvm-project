@@ -80,6 +80,8 @@ namespace llvm {
     // marker instruction.
     CALL_RVMARKER,
 
+    SD_SMUGGLED_NOP,
+
     /// X86 compare and logical compare instructions.
     CMP,
     FCMP,

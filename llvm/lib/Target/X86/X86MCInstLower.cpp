@@ -2581,6 +2581,13 @@ void X86AsmPrinter::emitInstruction(const MachineInstr *MI) {
     EmitSEHInstruction(MI);
     return;
 
+  case X86::NOP_Smuggle:
+    {
+      const auto &mbb = MI->getOperand(0).getMBB();
+      OutStreamer->emitBinaryData(llvm::StringLiteral::withInnerNUL("\x0f\x1f\x80"));
+      OutStreamer->emitSymbolValue(mbb->getSymbol(), 4, false);
+      return;
+    }
   case X86::SEH_Epilogue: {
     assert(MF->hasWinCFI() && "SEH_ instruction in function without WinCFI?");
     MachineBasicBlock::const_iterator MBBI(MI);

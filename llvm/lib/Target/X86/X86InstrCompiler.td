@@ -258,6 +258,9 @@ let isPseudo = 1, SchedRW = [WriteSystem] in {
                             "#SEH_EndPrologue", []>;
   def SEH_Epilogue : I<0, Pseudo, (outs), (ins),
                             "#SEH_Epilogue", []>;
+  def NOP_Smuggle : I<0, Pseudo, (outs), (ins brtarget32:$dst),
+                            "#NOP_Smuggle $dst",
+                            []>;
 }
 
 //===----------------------------------------------------------------------===//
@@ -1202,6 +1205,8 @@ def : Pat<(X86call_rvmarker (timm:$sel), (i64 texternalsym:$dst)),
 def : Pat<(X86call_rvmarker (timm:$sel), (i64 tglobaladdr:$dst)),
           (CALL64pcrel32_RVMARKER timm:$sel, tglobaladdr:$dst)>;
 
+def : Pat<(x86_SMUGGLED_NOP bb:$dst),
+          (NOP_Smuggle brtarget32:$dst)>;
 
 // Tailcall stuff. The TCRETURN instructions execute after the epilog, so they
 // can never use callee-saved registers. That is the purpose of the GR64_TC

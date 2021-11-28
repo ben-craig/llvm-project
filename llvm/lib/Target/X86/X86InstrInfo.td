@@ -215,6 +215,9 @@ def X86NoTrackCall : SDNode<"X86ISD::NT_CALL", SDT_X86Call,
 def X86NoTrackBrind : SDNode<"X86ISD::NT_BRIND", SDT_X86NtBrind,
                              [SDNPHasChain]>;
 
+def x86_SMUGGLED_NOP  : SDNode<"X86ISD::SD_SMUGGLED_NOP", SDTypeProfile<0, 1, [SDTCisVT<0, OtherVT>]>, 
+                          [SDNPHasChain, SDNPSideEffect]>;
+
 def X86rep_stos: SDNode<"X86ISD::REP_STOS", SDTX86RepStr,
                         [SDNPHasChain, SDNPInGlue, SDNPOutGlue, SDNPMayStore]>;
 def X86rep_movs: SDNode<"X86ISD::REP_MOVS", SDTX86RepStr,

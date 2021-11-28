@@ -4483,7 +4483,9 @@ X86TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
                                InFlag, dl);
     InFlag = Chain.getValue(1);
   }
-
+  if (CLI.UnwindDest) {
+    Chain = DAG.getNode(X86ISD::SD_SMUGGLED_NOP, dl, MVT::Other, Chain, CLI.UnwindDest);
+  }
   // Handle result values, copying them out of physregs into vregs that we
   // return.
   return LowerCallResult(Chain, InFlag, CallConv, isVarArg, Ins, dl, DAG,
@@ -31498,6 +31500,7 @@ const char *X86TargetLowering::getTargetNodeName(unsigned Opcode) const {
   NODE_NAME_CASE(FST)
   NODE_NAME_CASE(CALL)
   NODE_NAME_CASE(CALL_RVMARKER)
+  NODE_NAME_CASE(SD_SMUGGLED_NOP)
   NODE_NAME_CASE(BT)
   NODE_NAME_CASE(CMP)
   NODE_NAME_CASE(FCMP)
