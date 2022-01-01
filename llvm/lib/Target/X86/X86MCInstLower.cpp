@@ -2584,8 +2584,12 @@ void X86AsmPrinter::emitInstruction(const MachineInstr *MI) {
   case X86::NOP_Smuggle:
     {
       const auto &mbb = MI->getOperand(0).getMBB();
+
+      MCSymbol *CurPosLabel = MMI->getContext().createTempSymbol();
+      OutStreamer->AddComment("Smuggled nop");
+      OutStreamer->emitLabel(CurPosLabel);
       OutStreamer->emitBinaryData(llvm::StringLiteral::withInnerNUL("\x0f\x1f\x80"));
-      OutStreamer->emitSymbolValue(mbb->getSymbol(), 4, false);
+      OutStreamer->emitAbsoluteSymbolDiff(mbb->getSymbol(), CurPosLabel, 4);
       return;
     }
   case X86::SEH_Epilogue: {
