@@ -519,6 +519,18 @@ FindCallSeqStart(SDNode *N, unsigned &NestLevel, unsigned &MaxNest,
         --NestLevel;
         if (NestLevel == 0)
           return N;
+      } else if (N->getMachineOpcode() == /*HACKS! X86::NOP_Smuggle*/ 292) {
+        bool first = true;
+        for (const SDValue &Op : N->op_values()) {
+          if (first) {
+            first = false;
+            continue;
+          }
+          if (Op.getValueType() == MVT::Other) {
+            N = Op.getNode();
+            goto found_chain_operand;
+          }
+        }
       }
     }
     // Otherwise, find the chain and continue climbing.

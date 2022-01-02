@@ -66,6 +66,12 @@ def ADJCALLSTACKUP64   : I<0, Pseudo, (outs), (ins i32imm:$amt1, i32imm:$amt2),
 def : Pat<(X86callseq_start timm:$amt1, timm:$amt2),
         (ADJCALLSTACKDOWN64 i32imm:$amt1, i32imm:$amt2, 0)>, Requires<[IsLP64]>;
 
+let isPseudo = 1, SchedRW = [WriteSystem] in {
+  def NOP_Smuggle : I<0, Pseudo, (outs), (ins brtarget32:$dst),
+                            "#NOP_Smuggle $dst",
+                            [(x86_SMUGGLED_NOP bb:$dst)]>;
+}
+
 let SchedRW = [WriteSystem] in {
 
 // x86-64 va_start lowering magic.
@@ -258,9 +264,6 @@ let isPseudo = 1, SchedRW = [WriteSystem] in {
                             "#SEH_EndPrologue", []>;
   def SEH_Epilogue : I<0, Pseudo, (outs), (ins),
                             "#SEH_Epilogue", []>;
-  def NOP_Smuggle : I<0, Pseudo, (outs), (ins brtarget32:$dst),
-                            "#NOP_Smuggle $dst",
-                            []>;
 }
 
 //===----------------------------------------------------------------------===//
@@ -1204,9 +1207,6 @@ def : Pat<(X86call_rvmarker (timm:$sel), (i64 texternalsym:$dst)),
           (CALL64pcrel32_RVMARKER timm:$sel, texternalsym:$dst)>;
 def : Pat<(X86call_rvmarker (timm:$sel), (i64 tglobaladdr:$dst)),
           (CALL64pcrel32_RVMARKER timm:$sel, tglobaladdr:$dst)>;
-
-def : Pat<(x86_SMUGGLED_NOP bb:$dst),
-          (NOP_Smuggle brtarget32:$dst)>;
 
 // Tailcall stuff. The TCRETURN instructions execute after the epilog, so they
 // can never use callee-saved registers. That is the purpose of the GR64_TC

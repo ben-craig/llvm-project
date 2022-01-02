@@ -4458,6 +4458,17 @@ X86TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
     if (MDNode *HeapAlloc = CLI.CB->getMetadata("heapallocsite"))
       DAG.addHeapAllocSite(Chain.getNode(), HeapAlloc);
 
+  if (CLI.UnwindDest) {
+    SDVTList NodeTys = DAG.getVTList(MVT::Other, MVT::Glue);
+    SmallVector<SDValue, 3> Ops;
+    Ops.push_back(Chain);
+    Ops.push_back(CLI.UnwindDest);
+    if (InFlag.getNode())
+      Ops.push_back(InFlag);
+    Chain = DAG.getNode(X86ISD::SD_SMUGGLED_NOP, dl, NodeTys, Ops);
+    InFlag = Chain.getValue(1);
+  }
+
   // Create the CALLSEQ_END node.
   unsigned NumBytesForCalleeToPop;
   if (X86::isCalleePop(CallConv, Is64Bit, isVarArg,
@@ -4483,9 +4494,7 @@ X86TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
                                InFlag, dl);
     InFlag = Chain.getValue(1);
   }
-  if (CLI.UnwindDest) {
-    Chain = DAG.getNode(X86ISD::SD_SMUGGLED_NOP, dl, MVT::Other, Chain, CLI.UnwindDest);
-  }
+
   // Handle result values, copying them out of physregs into vregs that we
   // return.
   return LowerCallResult(Chain, InFlag, CallConv, isVarArg, Ins, dl, DAG,
