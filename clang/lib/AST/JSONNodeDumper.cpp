@@ -566,6 +566,9 @@ void JSONNodeDumper::VisitFunctionProtoType(const FunctionProtoType *T) {
     JOS.attribute("exceptionSpec", "throw");
     JOS.attribute("throwsAny", true);
     break;
+  case EST_Throws:
+    JOS.attribute("exceptionSpec", "throws");
+    break;
   case EST_BasicNoexcept:
     JOS.attribute("exceptionSpec", "noexcept");
     break;

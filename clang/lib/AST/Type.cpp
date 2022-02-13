@@ -2734,6 +2734,15 @@ bool Type::isStdByteType() const {
   return false;
 }
 
+bool Type::isStdErrorType() const {
+  if (const auto *RD = getAsCXXRecordDecl()) {
+    IdentifierInfo *II = RD->getIdentifier();
+    if (II && II->isStr("error") && RD->isInStdNamespace())
+      return true;
+  }
+  return false;
+}
+
 bool Type::isPromotableIntegerType() const {
   if (const auto *BT = getAs<BuiltinType>())
     switch (BT->getKind()) {

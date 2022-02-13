@@ -220,7 +220,12 @@ enum CXCursor_ExceptionSpecificationKind {
   /**
    * The cursor has a __declspec(nothrow) exception specification.
    */
-  CXCursor_ExceptionSpecificationKind_NoThrow
+  CXCursor_ExceptionSpecificationKind_NoThrow,
+
+  /**
+   * The cursor has exception specification throws.
+   */
+  CXCursor_ExceptionSpecificationKind_Throws,
 };
 
 /**

@@ -4328,6 +4328,9 @@ QualType ASTContext::getFunctionTypeInternal(
         // We don't know yet. It shouldn't matter what we pick here; no-one
         // should ever look at this.
         LLVM_FALLTHROUGH;
+      case EST_Throws:
+        CanonicalEPI.ExceptionSpec.Type = EST_Throws;
+        break;
       case EST_None: case EST_MSAny: case EST_NoexceptFalse:
         CanonicalEPI.ExceptionSpec.Type = EST_None;
         break;

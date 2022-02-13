@@ -266,6 +266,7 @@ DeclaratorChunk DeclaratorChunk::getFunction(bool hasProto,
     }
     break;
 
+  // case EST_Throws: // TODO: When conditional Throws is added
   case EST_DependentNoexcept:
   case EST_NoexceptFalse:
   case EST_NoexceptTrue:

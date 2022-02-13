@@ -445,6 +445,9 @@ bool Sema::CheckEquivalentExceptionSpec(FunctionDecl *Old, FunctionDecl *New) {
   case EST_NoThrow:
     OS <<"__attribute__((nothrow))";
     break;
+  case EST_Throws:
+    OS <<"throws";
+    break;
   case EST_None:
   case EST_MSAny:
   case EST_Unevaluated:

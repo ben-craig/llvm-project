@@ -6493,6 +6493,10 @@ mergeExceptionSpecs(Sema &S, FunctionProtoType::ExceptionSpecInfo ESI1,
   if (EST1 == EST_NoexceptTrue) return ESI2;
   if (EST2 == EST_NoexceptTrue) return ESI1;
 
+  // If either of them is "throws", the result is the other.
+  if (EST1 == EST_Throws) return ESI2;
+  if (EST2 == EST_Throws) return ESI1;
+
   // If we're left with value-dependent computed noexcept expressions, we're
   // stuck. Before C++17, we can just drop the exception specification entirely,
   // since it's not actually part of the canonical type. And this should never
@@ -6515,6 +6519,7 @@ mergeExceptionSpecs(Sema &S, FunctionProtoType::ExceptionSpecInfo ESI1,
   case EST_NoexceptFalse:
   case EST_NoexceptTrue:
   case EST_NoThrow:
+  case EST_Throws:
     llvm_unreachable("handled above");
 
   case EST_Dynamic: {

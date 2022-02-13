@@ -1843,7 +1843,7 @@ bool Parser::isCXXFunctionDeclarator(bool *IsAmbiguous) {
     else {
       const Token &Next = NextToken();
       if (Next.isOneOf(tok::amp, tok::ampamp, tok::kw_const, tok::kw_volatile,
-                       tok::kw_throw, tok::kw_noexcept, tok::l_square,
+                       tok::kw_throw, tok::kw_noexcept, tok::kw_throws, tok::l_square,
                        tok::l_brace, tok::kw_try, tok::equal, tok::arrow) ||
           isCXX11VirtSpecifier(Next))
         // The next token cannot appear after a constructor-style initializer,
@@ -2042,6 +2042,9 @@ Parser::TPResult Parser::TryParseFunctionDeclarator() {
       if (!SkipUntil(tok::r_paren, StopAtSemi))
         return TPResult::Error;
     }
+  }
+  if (Tok.is(tok::kw_throws)) {
+    ConsumeToken();
   }
 
   return TPResult::Ambiguous;
