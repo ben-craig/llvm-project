@@ -1728,9 +1728,14 @@ static void AddAttributesFromFunctionProtoType(ASTContext &Ctx,
   if (!FPT)
     return;
 
-  if (!isUnresolvedExceptionSpec(FPT->getExceptionSpecType()) &&
-      FPT->isNothrow())
-    FuncAttrs.addAttribute(llvm::Attribute::NoUnwind);
+  if (!isUnresolvedExceptionSpec(FPT->getExceptionSpecType()))
+  {
+    if(FPT->isNothrow()) {
+      FuncAttrs.addAttribute(llvm::Attribute::NoUnwind);
+    } else if(FPT->getExceptionSpecType() == EST_Throws) {
+      FuncAttrs.addAttribute(llvm::Attribute::NopSmuggleThrow);
+    }
+  }
 }
 
 bool CodeGenModule::MayDropFunctionReturn(const ASTContext &Context,

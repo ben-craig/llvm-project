@@ -172,6 +172,9 @@ def NoProfile : EnumAttr<"noprofile", [FnAttr]>;
 /// Function doesn't unwind stack.
 def NoUnwind : EnumAttr<"nounwind", [FnAttr]>;
 
+/// Function doesn't unwind stack.
+def NopSmuggleThrow : EnumAttr<"nop_smuggle_throw", [FnAttr]>;
+
 /// No SanitizeCoverage instrumentation.
 def NoSanitizeCoverage : EnumAttr<"nosanitize_coverage", [FnAttr]>;
 

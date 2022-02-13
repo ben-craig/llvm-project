@@ -3772,11 +3772,12 @@ Parser::tryParseExceptionSpecification(bool Delayed,
 
   // Handle delayed parsing of exception-specifications.
   if (Delayed) {
-    if (Tok.isNot(tok::kw_throw) && Tok.isNot(tok::kw_noexcept))
+    if (Tok.isNot(tok::kw_throw) && Tok.isNot(tok::kw_noexcept) && Tok.isNot(tok::kw_throws))
       return EST_None;
 
     // Consume and cache the starting token.
     bool IsNoexcept = Tok.is(tok::kw_noexcept);
+    bool IsThrows = Tok.is(tok::kw_throws);
     Token StartTok = Tok;
     SpecificationRange = SourceRange(ConsumeToken());
 
@@ -3787,6 +3788,10 @@ Parser::tryParseExceptionSpecification(bool Delayed,
         Diag(Tok, diag::warn_cxx98_compat_noexcept_decl);
         NoexceptExpr = nullptr;
         return EST_BasicNoexcept;
+      }
+      if (IsThrows) {
+        NoexceptExpr = nullptr;
+        return EST_Throws;
       }
 
       Diag(Tok, diag::err_expected_lparen_after) << "throw";
@@ -3814,6 +3819,12 @@ Parser::tryParseExceptionSpecification(bool Delayed,
                                                 DynamicExceptionRanges);
     assert(DynamicExceptions.size() == DynamicExceptionRanges.size() &&
            "Produced different number of exception types and ranges.");
+  }
+
+  // See if there's a static exception specification.
+  if (Tok.is(tok::kw_throws)) {
+    ConsumeToken();
+    return EST_Throws;
   }
 
   // If there's no noexcept specification, we're done.

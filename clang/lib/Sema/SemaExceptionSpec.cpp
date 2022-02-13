@@ -649,6 +649,11 @@ static bool CheckEquivalentExceptionSpecImpl(
       *MissingEmptyExceptionSpecification = true;
     }
 
+    if(OldEST == EST_Throws && NewEST == EST_Throws)
+    {
+      return true;
+    }
+
     return true;
   }
 

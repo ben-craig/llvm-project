@@ -4458,7 +4458,9 @@ X86TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
     if (MDNode *HeapAlloc = CLI.CB->getMetadata("heapallocsite"))
       DAG.addHeapAllocSite(Chain.getNode(), HeapAlloc);
 
-  if (CLI.UnwindDest) {
+  bool IsCalleeNopSmuggled = CLI.CB->getCalledFunction()->hasFnAttribute(Attribute::NopSmuggleThrow);
+
+  if (CLI.UnwindDest && IsCalleeNopSmuggled) {
     SDVTList NodeTys = DAG.getVTList(MVT::Other, MVT::Glue);
     SmallVector<SDValue, 3> Ops;
     Ops.push_back(Chain);
