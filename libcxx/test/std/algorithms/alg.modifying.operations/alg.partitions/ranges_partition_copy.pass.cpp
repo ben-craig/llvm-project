@@ -40,6 +40,9 @@
 
 struct UnaryPred { bool operator()(int) const; };
 
+template <typename T>
+constexpr auto test_end(T && t) {return t.data() + t.size();}
+
 // Test constraints of the (iterator, sentinel) overload.
 // ======================================================
 
@@ -132,7 +135,7 @@ constexpr void test_one(std::array<int, N1> input, Pred pred, std::array<int, N2
     std::array<int, N3> out2;
 
     std::same_as<ResultT> decltype(auto) result = std::ranges::partition_copy(
-        Iter(begin), Sent(Iter(end)), OutIter1(out1.begin()), OutIter2(out2.begin()), pred);
+        Iter(begin), Sent(Iter(end)), OutIter1(out1.data()), OutIter2(out2.data()), pred);
 
     assert(base(result.in) == input.data() + input.size());
     assert(base(result.out1) == out1.data() + expected_true.size());
@@ -148,7 +151,7 @@ constexpr void test_one(std::array<int, N1> input, Pred pred, std::array<int, N2
     std::array<int, N3> out2;
 
     std::same_as<ResultT> decltype(auto) result = std::ranges::partition_copy(
-        range, OutIter1(out1.begin()), OutIter2(out2.begin()), pred);
+        range, OutIter1(out1.data()), OutIter2(out2.data()), pred);
 
     assert(base(result.in) == input.data() + input.size());
     assert(base(result.out1) == out1.data() + expected_true.size());
@@ -238,13 +241,13 @@ constexpr bool test() {
     { // (iterator, sentinel) overload.
       {
         std::array<int, 3> out1, out2;
-        std::ranges::partition_copy(in.begin(), in.end(), out1.begin(), out2.begin(), is_negative);
+        std::ranges::partition_copy(in.data(), test_end(in), out1.data(), out2.data(), is_negative);
         assert(out1 == expected_negative);
         assert(out2 == expected_positive);
       }
       {
         std::array<int, 3> out1, out2;
-        std::ranges::partition_copy(in.begin(), in.end(), out1.begin(), out2.begin(), is_negative, negate);
+        std::ranges::partition_copy(in.data(), test_end(in), out1.data(), out2.data(), is_negative, negate);
         assert(out1 == expected_positive);
         assert(out2 == expected_negative);
       }
@@ -253,13 +256,13 @@ constexpr bool test() {
     { // (range) overload.
       {
         std::array<int, 3> out1, out2;
-        std::ranges::partition_copy(in, out1.begin(), out2.begin(), is_negative);
+        std::ranges::partition_copy(in, out1.data(), out2.data(), is_negative);
         assert(out1 == expected_negative);
         assert(out2 == expected_positive);
       }
       {
         std::array<int, 3> out1, out2;
-        std::ranges::partition_copy(in, out1.begin(), out2.begin(), is_negative, negate);
+        std::ranges::partition_copy(in, out1.data(), out2.data(), is_negative, negate);
         assert(out1 == expected_positive);
         assert(out2 == expected_negative);
       }
@@ -279,14 +282,14 @@ constexpr bool test() {
       auto expected = static_cast<int>(in.size());
 
       {
-        std::ranges::partition_copy(in.begin(), in.end(), out1.begin(), out2.begin(), pred, proj);
+        std::ranges::partition_copy(in.data(), test_end(in), out1.data(), out2.data(), pred, proj);
         assert(pred_count == expected);
         assert(proj_count == expected);
         pred_count = proj_count = 0;
       }
 
       {
-        std::ranges::partition_copy(in, out1.begin(), out2.begin(), pred, proj);
+        std::ranges::partition_copy(in, out1.data(), out2.data(), pred, proj);
         assert(pred_count == expected);
         assert(proj_count == expected);
         pred_count = proj_count = 0;

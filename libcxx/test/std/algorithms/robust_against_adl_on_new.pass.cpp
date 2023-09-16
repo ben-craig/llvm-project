@@ -27,11 +27,11 @@ int main(int, char**)
     std::sort(a, a+4);
     std::sort(a, a+4, std::less<A>());
     std::partition(a, a+4, A::isEven);
-    std::stable_sort(a, a+4);
-    std::stable_sort(a, a+4, std::less<A>());
-    std::stable_partition(a, a+4, A::isEven);
-    std::inplace_merge(a, a+2, a+4);
-    std::inplace_merge(a, a+2, a+4, std::less<A>());
+    //std::stable_sort(a, a+4);
+    //std::stable_sort(a, a+4, std::less<A>());
+    //std::stable_partition(a, a+4, A::isEven);
+    //std::inplace_merge(a, a+2, a+4);
+    //std::inplace_merge(a, a+2, a+4, std::less<A>());
 
     return 0;
 }

@@ -38,6 +38,9 @@ static_assert(!HasCopyNIt<int*, int*, SentinelForNotWeaklyEqualityComparableWith
 
 static_assert(std::is_same_v<std::ranges::copy_result<int, long>, std::ranges::in_out_result<int, long>>);
 
+template <typename T>
+constexpr auto test_end(T && t) {return t.data() + t.size();}
+
 template <class In, class Out, class Sent = In>
 constexpr void test_iterators() {
   { // simple test
@@ -53,7 +56,7 @@ constexpr void test_iterators() {
   { // check that an empty range works
     std::array<int, 0> in;
     std::array<int, 0> out;
-    auto ret = std::ranges::copy_n(In(in.data()), in.size(), Out(out.begin()));
+    auto ret = std::ranges::copy_n(In(in.data()), in.size(), Out(out.data()));
     assert(base(ret.in) == in.data());
     assert(base(ret.out) == out.data());
   }
@@ -103,10 +106,10 @@ constexpr bool test() {
     };
     std::array<CopyOnce, 4> in {};
     std::array<CopyOnce, 4> out {};
-    auto ret = std::ranges::copy_n(in.data(), in.size(), out.begin());
-    assert(ret.in == in.end());
-    assert(ret.out == out.end());
-    assert(std::all_of(out.begin(), out.end(), [](const auto& e) { return e.copied; }));
+    auto ret = std::ranges::copy_n(in.data(), in.size(), out.data());
+    assert(ret.in == test_end(in));
+    assert(ret.out == test_end(out));
+    assert(std::all_of(out.data(), test_end(out), [](const auto& e) { return e.copied; }));
   }
 
   return true;

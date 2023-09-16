@@ -23,7 +23,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iterator>
-#include <vector>
+#include <array>
 
 #include "test_macros.h"
 #include "MoveOnly.h"
@@ -31,18 +31,16 @@
 
 int main(int, char**)
 {
-    std::vector<MoveOnly> lhs, rhs;
-    lhs.push_back(MoveOnly(2));
-    rhs.push_back(MoveOnly(2));
+    std::array<MoveOnly, 1> lhs({2}), rhs({2});
 
-    std::vector<MoveOnly> res;
+    std::array<MoveOnly, 2> res({99,99});
     std::set_union(std::make_move_iterator(lhs.begin()),
                    std::make_move_iterator(lhs.end()),
                    std::make_move_iterator(rhs.begin()),
-                   std::make_move_iterator(rhs.end()), std::back_inserter(res));
+                   std::make_move_iterator(rhs.end()), std::begin(res));
 
-    assert(res.size() == 1);
     assert(res[0].get() == 2);
+    assert(res[1].get() == 99);
 
   return 0;
 }

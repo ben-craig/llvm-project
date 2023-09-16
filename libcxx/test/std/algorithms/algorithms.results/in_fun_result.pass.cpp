@@ -65,12 +65,12 @@ struct ConvertibleFrom {
 
 constexpr bool test() {
   {
-    std::ranges::in_fun_result<int, double> res{10, 0.};
+    std::ranges::in_fun_result<int, char> res{10, 'a'};
     assert(res.in == 10);
-    assert(res.fun == 0.);
-    std::ranges::in_fun_result<ConvertibleFrom<int>, ConvertibleFrom<double>> res2 = res;
+    assert(res.fun == 'a');
+    std::ranges::in_fun_result<ConvertibleFrom<int>, ConvertibleFrom<char>> res2 = res;
     assert(res2.in.content == 10);
-    assert(res2.fun.content == 0.);
+    assert(res2.fun.content == 'a');
   }
   {
     std::ranges::in_fun_result<MoveOnly, int> res{MoveOnly{}, 2};

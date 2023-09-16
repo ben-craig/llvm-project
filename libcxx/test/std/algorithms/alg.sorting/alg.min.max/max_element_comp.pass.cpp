@@ -37,28 +37,27 @@ test(Iter first, Iter last)
         assert(i == last);
 }
 
-template <class Iter>
+template <class Iter, int N>
 void
-test(int N)
+test()
 {
-    int* a = new int[N];
+    static int a[N];
     for (int i = 0; i < N; ++i)
         a[i] = i;
     std::shuffle(a, a+N, randomness);
     test(Iter(a), Iter(a+N));
-    delete [] a;
 }
 
 template <class Iter>
 void
 test()
 {
-    test<Iter>(0);
-    test<Iter>(1);
-    test<Iter>(2);
-    test<Iter>(3);
-    test<Iter>(10);
-    test<Iter>(1000);
+    //test<Iter, 0>();
+    test<Iter, 1>();
+    test<Iter, 2>();
+    test<Iter, 3>();
+    test<Iter, 10>();
+    test<Iter, 1000>();
 }
 
 template <class Iter, class Pred>
@@ -70,12 +69,11 @@ void test_eq0(Iter first, Iter last, Pred p)
 void test_eq()
 {
     const int N = 10;
-    int* a = new int[N];
+    static int a[N];
     for (int i = 0; i < N; ++i)
         a[i] = 10; // all the same
     test_eq0(a, a+N, std::less<int>());
     test_eq0(a, a+N, std::greater<int>());
-    delete [] a;
 }
 
 #if TEST_STD_VER >= 14

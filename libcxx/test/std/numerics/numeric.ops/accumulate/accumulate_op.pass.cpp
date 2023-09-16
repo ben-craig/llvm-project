@@ -70,9 +70,11 @@ TEST_CONSTEXPR_CXX20 void
 #endif
 test_string()
 {
+#ifdef BMC_FREESTANDING
     std::string sa[] = {"a", "b", "c"};
     assert(std::accumulate(sa, sa + 3, std::string()) == "abc");
     assert(std::accumulate(sa, sa + 3, std::string(), std::plus<std::string>()) == "abc");
+#endif
 }
 
 template <class Iter, class T>

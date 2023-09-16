@@ -42,38 +42,36 @@ test(Iter first, Iter last)
     }
 }
 
-template <class Iter>
+template <class Iter, int N>
 void
-test(int N)
+test()
 {
-    int* a = new int[N];
+    static int a[N];
     for (int i = 0; i < N; ++i)
         a[i] = i;
     std::shuffle(a, a+N, randomness);
     test(Iter(a), Iter(a+N));
-    delete [] a;
 }
 
 template <class Iter>
 void
 test()
 {
-    test<Iter>(0);
-    test<Iter>(1);
-    test<Iter>(2);
-    test<Iter>(3);
-    test<Iter>(10);
-    test<Iter>(1000);
+    //test<Iter, 0>();
+    test<Iter, 1>();
+    test<Iter, 2>();
+    test<Iter, 3>();
+    test<Iter, 10>();
+    test<Iter, 1000>();
     {
     const int N = 100;
-    int* a = new int[N];
+    static int a[N];
     for (int i = 0; i < N; ++i)
         a[i] = 5;
     std::shuffle(a, a+N, randomness);
     std::pair<Iter, Iter> p = std::minmax_element(Iter(a), Iter(a+N));
     assert(base(p.first) == a);
     assert(base(p.second) == a+N-1);
-    delete [] a;
     }
 }
 

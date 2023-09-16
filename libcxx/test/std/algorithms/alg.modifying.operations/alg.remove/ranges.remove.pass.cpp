@@ -55,6 +55,9 @@ struct Data {
   int val;
 };
 
+template <typename T>
+constexpr auto test_end(T && t) {return t.data() + t.size();}
+
 template <class Iter, class Sent, int N, int M>
 constexpr void test(Data<N, M> d) {
   { // iterator overload
@@ -65,7 +68,7 @@ constexpr void test(Data<N, M> d) {
 
     assert(base(ret.begin()) == input.data() + M);
     assert(base(ret.end()) == input.data() + N);
-    assert(std::ranges::equal(input.begin(), base(ret.begin()), d.expected.begin(), d.expected.end()));
+    assert(std::ranges::equal(input.data(), base(ret.begin()), d.expected.data(), test_end(d.expected)));
   }
 
   { // range overload
@@ -76,7 +79,7 @@ constexpr void test(Data<N, M> d) {
 
     assert(base(ret.begin()) == input.data() + M);
     assert(base(ret.end()) == input.data() + N);
-    assert(std::ranges::equal(base(input.begin()), base(ret.begin()), d.expected.begin(), d.expected.end()));
+    assert(std::ranges::equal(base(input.data()), base(ret.begin()), d.expected.data(), test_end(d.expected)));
   }
 }
 

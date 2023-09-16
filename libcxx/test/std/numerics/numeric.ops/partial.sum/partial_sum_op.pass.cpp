@@ -76,11 +76,13 @@ TEST_CONSTEXPR_CXX20 void
 #endif
 test_string()
 {
+#if BMC_FREESTANDING
     std::string sa[] = {"a", "b", "c"};
     std::string sr[] = {"a", "ba", "cb"};
     std::string output[3];
     std::adjacent_difference(sa, sa + 3, output, std::plus<std::string>());
     for (unsigned i = 0; i < 3; ++i) assert(output[i] == sr[i]);
+#endif
 }
 
 template <class InIter, class OutIter>

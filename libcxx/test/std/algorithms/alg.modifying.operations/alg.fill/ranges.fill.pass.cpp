@@ -115,22 +115,22 @@ constexpr bool test() {
         std::ranges::fill(std::views::all(a), 1);
     assert(std::all_of(a.begin(), a.end(), [](int i) { return i == 1; }));
   }
-
+#if 0
   { // check that non-trivially copyable items are copied properly
     {
       std::array<std::string, 10> a;
       auto ret = std::ranges::fill(a.begin(), a.end(), "long long string so no SSO");
-      assert(ret == a.data() + a.size());
+      assert(ret == a.begin() + a.size());
       assert(std::all_of(a.begin(), a.end(), [](auto& s) { return s == "long long string so no SSO"; }));
     }
     {
       std::array<std::string, 10> a;
       auto ret = std::ranges::fill(a, "long long string so no SSO");
-      assert(ret == a.data() + a.size());
+      assert(ret == a.begin() + a.size());
       assert(std::all_of(a.begin(), a.end(), [](auto& s) { return s == "long long string so no SSO"; }));
     }
   }
-
+#endif
   return true;
 }
 

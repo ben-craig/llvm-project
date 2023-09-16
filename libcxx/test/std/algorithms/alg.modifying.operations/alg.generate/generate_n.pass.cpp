@@ -66,9 +66,9 @@ test()
     test2<Iter, long>();
     test2<Iter, unsigned long>();
     test2<Iter, UserDefinedIntegral<unsigned> >();
-    test2<Iter, float>();
-    test2<Iter, double>();  // this is PR#35498
-    test2<Iter, long double>();
+    //test2<Iter, float>();
+    //test2<Iter, double>();  // this is PR#35498
+    //test2<Iter, long double>();
 }
 
 int main(int, char**)

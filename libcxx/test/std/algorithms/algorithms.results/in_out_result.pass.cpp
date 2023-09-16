@@ -60,11 +60,11 @@ struct ConvertibleFrom {
 
 constexpr bool test() {
   {
-    std::ranges::in_out_result<double, int> res{10, 1};
-    assert(res.in == 10);
+    std::ranges::in_out_result<char, int> res{'a', 1};
+    assert(res.in == 'a');
     assert(res.out == 1);
-    std::ranges::in_out_result<ConvertibleFrom<double>, ConvertibleFrom<int>> res2 = res;
-    assert(res2.in.content == 10);
+    std::ranges::in_out_result<ConvertibleFrom<char>, ConvertibleFrom<int>> res2 = res;
+    assert(res2.in.content == 'a');
     assert(res2.out.content == 1);
   }
   {

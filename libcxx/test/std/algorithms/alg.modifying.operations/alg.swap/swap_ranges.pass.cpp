@@ -15,11 +15,11 @@
 
 #include <algorithm>
 #include <cassert>
-#include <memory>
 #include <utility>
 
 #include "test_macros.h"
 #include "test_iterators.h"
+#include "MoveOnly.h"
 
 template<class Iter1, class Iter2>
 void
@@ -42,20 +42,20 @@ template<class Iter1, class Iter2>
 void
 test1()
 {
-    std::unique_ptr<int> i[3];
+    MoveOnly i[3];
     for (int k = 0; k < 3; ++k)
-        i[k].reset(new int(k+1));
-    std::unique_ptr<int> j[3];
+        i[k] = MoveOnly(k+1);
+    MoveOnly j[3];
     for (int k = 0; k < 3; ++k)
-        j[k].reset(new int(k+4));
+        j[k] = MoveOnly(k+4);
     Iter2 r = std::swap_ranges(Iter1(i), Iter1(i+3), Iter2(j));
     assert(base(r) == j+3);
-    assert(*i[0] == 4);
-    assert(*i[1] == 5);
-    assert(*i[2] == 6);
-    assert(*j[0] == 1);
-    assert(*j[1] == 2);
-    assert(*j[2] == 3);
+    assert(i[0].get() == 4);
+    assert(i[1].get() == 5);
+    assert(i[2].get() == 6);
+    assert(j[0].get() == 1);
+    assert(j[1].get() == 2);
+    assert(j[2].get() == 3);
 }
 #endif // TEST_STD_VER >= 11
 
@@ -144,25 +144,25 @@ int main(int, char**)
     test<int*, int*>();
 
 #if TEST_STD_VER >= 11
-    test1<forward_iterator<std::unique_ptr<int>*>, forward_iterator<std::unique_ptr<int>*> >();
-    test1<forward_iterator<std::unique_ptr<int>*>, bidirectional_iterator<std::unique_ptr<int>*> >();
-    test1<forward_iterator<std::unique_ptr<int>*>, random_access_iterator<std::unique_ptr<int>*> >();
-    test1<forward_iterator<std::unique_ptr<int>*>, std::unique_ptr<int>*>();
+    test1<forward_iterator<MoveOnly*>, forward_iterator<MoveOnly*> >();
+    test1<forward_iterator<MoveOnly*>, bidirectional_iterator<MoveOnly*> >();
+    test1<forward_iterator<MoveOnly*>, random_access_iterator<MoveOnly*> >();
+    test1<forward_iterator<MoveOnly*>, MoveOnly*>();
 
-    test1<bidirectional_iterator<std::unique_ptr<int>*>, forward_iterator<std::unique_ptr<int>*> >();
-    test1<bidirectional_iterator<std::unique_ptr<int>*>, bidirectional_iterator<std::unique_ptr<int>*> >();
-    test1<bidirectional_iterator<std::unique_ptr<int>*>, random_access_iterator<std::unique_ptr<int>*> >();
-    test1<bidirectional_iterator<std::unique_ptr<int>*>, std::unique_ptr<int>*>();
+    test1<bidirectional_iterator<MoveOnly*>, forward_iterator<MoveOnly*> >();
+    test1<bidirectional_iterator<MoveOnly*>, bidirectional_iterator<MoveOnly*> >();
+    test1<bidirectional_iterator<MoveOnly*>, random_access_iterator<MoveOnly*> >();
+    test1<bidirectional_iterator<MoveOnly*>, MoveOnly*>();
 
-    test1<random_access_iterator<std::unique_ptr<int>*>, forward_iterator<std::unique_ptr<int>*> >();
-    test1<random_access_iterator<std::unique_ptr<int>*>, bidirectional_iterator<std::unique_ptr<int>*> >();
-    test1<random_access_iterator<std::unique_ptr<int>*>, random_access_iterator<std::unique_ptr<int>*> >();
-    test1<random_access_iterator<std::unique_ptr<int>*>, std::unique_ptr<int>*>();
+    test1<random_access_iterator<MoveOnly*>, forward_iterator<MoveOnly*> >();
+    test1<random_access_iterator<MoveOnly*>, bidirectional_iterator<MoveOnly*> >();
+    test1<random_access_iterator<MoveOnly*>, random_access_iterator<MoveOnly*> >();
+    test1<random_access_iterator<MoveOnly*>, MoveOnly*>();
 
-    test1<std::unique_ptr<int>*, forward_iterator<std::unique_ptr<int>*> >();
-    test1<std::unique_ptr<int>*, bidirectional_iterator<std::unique_ptr<int>*> >();
-    test1<std::unique_ptr<int>*, random_access_iterator<std::unique_ptr<int>*> >();
-    test1<std::unique_ptr<int>*, std::unique_ptr<int>*>();
+    test1<MoveOnly*, forward_iterator<MoveOnly*> >();
+    test1<MoveOnly*, bidirectional_iterator<MoveOnly*> >();
+    test1<MoveOnly*, random_access_iterator<MoveOnly*> >();
+    test1<MoveOnly*, MoveOnly*>();
 #endif // TEST_STD_VER >= 11
 
 #if TEST_STD_VER > 17

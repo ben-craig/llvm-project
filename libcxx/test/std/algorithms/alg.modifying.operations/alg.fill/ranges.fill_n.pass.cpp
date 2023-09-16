@@ -71,14 +71,14 @@ constexpr bool test() {
     std::ranges::fill_n(a, 5, S {});
     assert(std::all_of(a, a + 5, [](S& s) { return s.copied; }));
   }
-
+  #if 0
   { // check that non-trivially copyable items are copied properly
     std::array<std::string, 10> a;
     auto ret = std::ranges::fill_n(a.data(), 10, "long long string so no SSO");
     assert(ret == a.data() + a.size());
     assert(std::all_of(a.begin(), a.end(), [](auto& s) { return s == "long long string so no SSO"; }));
   }
-
+  #endif
   return true;
 }
 

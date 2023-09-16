@@ -60,12 +60,12 @@ struct ConstructibleFrom {
 
 constexpr bool test() {
   {
-    std::ranges::in_in_result<int, double> res{10L, 0.};
+    std::ranges::in_in_result<int, char> res{10L, 'a'};
     assert(res.in1 == 10);
-    assert(res.in2 == 0.);
-    std::ranges::in_in_result<ConstructibleFrom<int>, ConstructibleFrom<double>> res2 = res;
+    assert(res.in2 == 'a');
+    std::ranges::in_in_result<ConstructibleFrom<int>, ConstructibleFrom<char>> res2 = res;
     assert(res2.in1.content == 10);
-    assert(res2.in2.content == 0.);
+    assert(res2.in2.content == 'a');
   }
   {
     std::ranges::in_in_result<MoveOnly, int> res{MoveOnly{}, 0};

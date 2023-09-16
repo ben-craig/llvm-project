@@ -13,7 +13,7 @@
 //   upper_bound(Iter first, Iter last, const T& value);
 
 #include <algorithm>
-#include <vector>
+#include <array>
 #include <cassert>
 #include <cstddef>
 
@@ -48,7 +48,7 @@ test()
 {
     const unsigned N = 1000;
     const int M = 10;
-    std::vector<int> v(N);
+    static std::array<int, N> v;
     int x = 0;
     for (std::size_t i = 0; i < v.size(); ++i)
     {

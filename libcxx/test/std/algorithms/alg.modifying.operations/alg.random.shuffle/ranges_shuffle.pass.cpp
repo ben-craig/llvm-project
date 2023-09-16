@@ -251,7 +251,7 @@ void test() {
       auto end = adl::Iterator::TrackSwaps(in.data() + in.size(), swaps);
 
       std::ranges::shuffle(begin, end, RandGen());
-      int expected = in.size() - 1;
+      int expected = static_cast<int>(in.size() - 1);
       // Note: our implementation doesn't perform a swap when the distribution returns 0, so the actual number of swaps
       // might be less than specified in the standard.
       assert(swaps <= expected);

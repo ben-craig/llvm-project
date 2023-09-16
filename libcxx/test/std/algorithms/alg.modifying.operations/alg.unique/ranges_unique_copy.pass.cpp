@@ -186,7 +186,7 @@ constexpr void testUniqueCopyImpl(std::array<int, N1> in, std::array<int, N2> ex
   {
     std::array<int, N2> out;
     std::same_as<std::ranges::unique_copy_result<InIter, OutIter>> decltype(auto) result =
-        std::ranges::unique_copy(InIter{in.data()}, Sent{InIter{in.data() + in.size()}}, OutIter{out.begin()});
+        std::ranges::unique_copy(InIter{in.data()}, Sent{InIter{in.data() + in.size()}}, OutIter{out.data()});
     assert(std::ranges::equal(out, expected));
     assert(base(result.in) == in.data() + in.size());
     assert(base(result.out) == out.data() + out.size());
@@ -197,7 +197,7 @@ constexpr void testUniqueCopyImpl(std::array<int, N1> in, std::array<int, N2> ex
     std::array<int, N2> out;
     std::ranges::subrange r{InIter{in.data()}, Sent{InIter{in.data() + in.size()}}};
     std::same_as<std::ranges::unique_copy_result<InIter, OutIter>> decltype(auto) result =
-        std::ranges::unique_copy(r, OutIter{out.begin()});
+        std::ranges::unique_copy(r, OutIter{out.data()});
     assert(std::ranges::equal(out, expected));
     assert(base(result.in) == in.data() + in.size());
     assert(base(result.out) == out.data() + out.size());
@@ -357,10 +357,10 @@ constexpr bool test() {
     // iterator overload
     {
       std::array<Data, 2> out;
-      auto result = std::ranges::unique_copy(in.begin(), in.end(), out.begin(), comp);
+      auto result = std::ranges::unique_copy(in.data(), in.data()+in.size(), out.data(), comp);
       assert(std::ranges::equal(out, expected, comp));
-      assert(base(result.in) == in.begin() + 4);
-      assert(base(result.out) == out.begin() + 2);
+      assert(base(result.in) == in.data() + 4);
+      assert(base(result.out) == out.data() + 2);
     }
 
     // range overload

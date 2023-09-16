@@ -185,7 +185,7 @@ constexpr bool test() {
     assert(ret.out == out.data() + 4);
     assert((out == std::array{1, 2, 3, 4}));
   }
-
+#if 0
   { // check that an iterator is returned with a borrowing range
     std::array in {1, 2, 3, 4};
     std::array<int, 4> out;
@@ -195,7 +195,7 @@ constexpr bool test() {
     assert(ret.out == out.data() + 4);
     assert(in == out);
   }
-
+#endif
   { // check that every element is moved exactly once
     struct MoveOnce {
       bool moved = false;

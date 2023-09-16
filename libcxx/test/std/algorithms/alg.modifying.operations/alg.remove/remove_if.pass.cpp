@@ -17,11 +17,11 @@
 #include <algorithm>
 #include <functional>
 #include <cassert>
-#include <memory>
 
 #include "test_macros.h"
 #include "test_iterators.h"
 #include "counting_predicates.h"
+#include "MoveOnly.h"
 
 TEST_CONSTEXPR bool equal2 ( int i ) { return i == 2; }
 
@@ -59,7 +59,7 @@ test()
 #if TEST_STD_VER >= 11
 struct pred
 {
-    bool operator()(const std::unique_ptr<int>& i) {return *i == 2;}
+    bool operator()(const MoveOnly& i) {return i.get() == 2;}
 };
 
 template <class Iter>
@@ -67,24 +67,24 @@ void
 test1()
 {
     const unsigned sa = 9;
-    std::unique_ptr<int> ia[sa];
-    ia[0].reset(new int(0));
-    ia[1].reset(new int(1));
-    ia[2].reset(new int(2));
-    ia[3].reset(new int(3));
-    ia[4].reset(new int(4));
-    ia[5].reset(new int(2));
-    ia[6].reset(new int(3));
-    ia[7].reset(new int(4));
-    ia[8].reset(new int(2));
+    MoveOnly ia[sa];
+    ia[0] = MoveOnly(0);
+    ia[1] = MoveOnly(1);
+    ia[2] = MoveOnly(2);
+    ia[3] = MoveOnly(3);
+    ia[4] = MoveOnly(4);
+    ia[5] = MoveOnly(2);
+    ia[6] = MoveOnly(3);
+    ia[7] = MoveOnly(4);
+    ia[8] = MoveOnly(2);
     Iter r = std::remove_if(Iter(ia), Iter(ia+sa), pred());
     assert(base(r) == ia + sa-3);
-    assert(*ia[0] == 0);
-    assert(*ia[1] == 1);
-    assert(*ia[2] == 3);
-    assert(*ia[3] == 4);
-    assert(*ia[4] == 3);
-    assert(*ia[5] == 4);
+    assert(ia[0].get() == 0);
+    assert(ia[1].get() == 1);
+    assert(ia[2].get() == 3);
+    assert(ia[3].get() == 4);
+    assert(ia[4].get() == 3);
+    assert(ia[5].get() == 4);
 }
 #endif // TEST_STD_VER >= 11
 
@@ -96,10 +96,10 @@ int main(int, char**)
     test<int*>();
 
 #if TEST_STD_VER >= 11
-    test1<forward_iterator<std::unique_ptr<int>*> >();
-    test1<bidirectional_iterator<std::unique_ptr<int>*> >();
-    test1<random_access_iterator<std::unique_ptr<int>*> >();
-    test1<std::unique_ptr<int>*>();
+    test1<forward_iterator<MoveOnly*> >();
+    test1<bidirectional_iterator<MoveOnly*> >();
+    test1<random_access_iterator<MoveOnly*> >();
+    test1<MoveOnly*>();
 #endif // TEST_STD_VER >= 11
 
 #if TEST_STD_VER > 17

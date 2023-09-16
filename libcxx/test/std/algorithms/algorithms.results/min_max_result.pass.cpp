@@ -61,10 +61,10 @@ struct ConvertibleFrom {
 
 constexpr bool test() {
   {
-    std::ranges::min_max_result<double> res{10, 1};
+    std::ranges::min_max_result<char> res{10, 1};
     assert(res.min == 10);
     assert(res.max == 1);
-    std::ranges::min_max_result<ConvertibleFrom<int>> res2 = res;
+    std::ranges::min_max_result<ConvertibleFrom<char>> res2 = res;
     assert(res2.min.content == 10);
     assert(res2.max.content == 1);
   }

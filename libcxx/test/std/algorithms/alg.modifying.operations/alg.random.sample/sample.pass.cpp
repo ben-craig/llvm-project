@@ -139,9 +139,9 @@ int main(int, char**) {
   test<forward_iterator, int, cpp17_output_iterator, int>();
   test<forward_iterator, int, random_access_iterator, int>();
 
-  test<cpp17_input_iterator, int, random_access_iterator, double>();
-  test<forward_iterator, int, cpp17_output_iterator, double>();
-  test<forward_iterator, int, random_access_iterator, double>();
+  test<cpp17_input_iterator, int, random_access_iterator, uint64_t>();
+  test<forward_iterator, int, cpp17_output_iterator, uint64_t>();
+  test<forward_iterator, int, random_access_iterator, uint64_t>();
 
   test_empty_population<cpp17_input_iterator, int, random_access_iterator, int>();
   test_empty_population<forward_iterator, int, cpp17_output_iterator, int>();

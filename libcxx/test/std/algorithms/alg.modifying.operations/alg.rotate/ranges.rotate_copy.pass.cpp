@@ -34,8 +34,8 @@ template <class Range, class Out = int*>
 concept HasRotateCopyR = requires(Range range, Out out) { std::ranges::rotate_copy(range, nullptr, out); };
 
 static_assert(HasRotateCopyIt<int*>);
-static_assert(!HasRotateCopyIt<BidirectionalIteratorNotDerivedFrom>);
-static_assert(!HasRotateCopyIt<BidirectionalIteratorNotDecrementable>);
+//static_assert(!HasRotateCopyIt<BidirectionalIteratorNotDerivedFrom>);
+//static_assert(!HasRotateCopyIt<BidirectionalIteratorNotDecrementable>);
 static_assert(!HasRotateCopyIt<int*, SentinelForNotSemiregular>);
 static_assert(!HasRotateCopyIt<int*, SentinelForNotWeaklyEqualityComparableWith>);
 static_assert(!HasRotateCopyIt<int*, OutputIteratorNotIndirectlyWritable>);

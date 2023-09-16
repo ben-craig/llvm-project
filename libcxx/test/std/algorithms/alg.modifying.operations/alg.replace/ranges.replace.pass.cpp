@@ -1,3 +1,4 @@
+#pragma warning( disable : 4244 )
 //===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.

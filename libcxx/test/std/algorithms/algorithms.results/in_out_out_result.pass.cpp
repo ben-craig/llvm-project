@@ -66,14 +66,14 @@ struct ConvertibleFrom {
 
 constexpr bool test() {
   {
-    std::ranges::in_out_out_result<int, double, float> res{10, 0., 1.f};
+    std::ranges::in_out_out_result<int, char, void*> res{10, 'a', nullptr};
     assert(res.in == 10);
-    assert(res.out1 == 0.);
-    assert(res.out2 == 1.f);
-    std::ranges::in_out_out_result<ConvertibleFrom<int>, ConvertibleFrom<double>, ConvertibleFrom<float>> res2 = res;
+    assert(res.out1 == 'a');
+    assert(res.out2 == nullptr);
+    std::ranges::in_out_out_result<ConvertibleFrom<int>, ConvertibleFrom<char>, ConvertibleFrom<void*>> res2 = res;
     assert(res2.in.content == 10);
-    assert(res2.out1.content == 0.);
-    assert(res2.out2.content == 1.f);
+    assert(res2.out1.content == 'a');
+    assert(res2.out2.content == nullptr);
   }
   {
     std::ranges::in_out_out_result<MoveOnly, int, int> res1{MoveOnly{}, 0, 0};
