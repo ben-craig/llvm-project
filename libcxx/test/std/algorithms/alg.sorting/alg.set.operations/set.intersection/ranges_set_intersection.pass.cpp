@@ -26,7 +26,7 @@
 //                      Comp comp = {}, Proj1 proj1 = {}, Proj2 proj2 = {});                         // since C++20
 
 #include <algorithm>
-#include <array>
+#include <test_array.h>
 #include <concepts>
 
 #include "almost_satisfies_types.h"
@@ -94,7 +94,7 @@ static_assert(!HasSetIntersectionRange<UncheckedRange<MoveOnly*>, UncheckedRange
 using std::ranges::set_intersection_result;
 
 template <class In1, class In2, class Out, std::size_t N1, std::size_t N2, std::size_t N3>
-constexpr void testSetIntersectionImpl(std::array<int, N1> in1, std::array<int, N2> in2, std::array<int, N3> expected) {
+constexpr void testSetIntersectionImpl(TestArray<int, N1> in1, TestArray<int, N2> in2, TestArray<int, N3> expected) {
   // TODO: std::ranges::set_intersection calls std::ranges::copy
   // std::ranges::copy(contiguous_iterator<int*>, sentinel_wrapper<contiguous_iterator<int*>>, contiguous_iterator<int*>) doesn't seem to work.
   // It seems that std::ranges::copy calls std::copy, which unwraps contiguous_iterator<int*> into int*,
@@ -104,7 +104,7 @@ constexpr void testSetIntersectionImpl(std::array<int, N1> in1, std::array<int, 
 
   // iterator overload
   {
-    std::array<int, N3> out;
+    TestArray<int, N3> out;
     std::same_as<set_intersection_result<In1, In2, Out>> decltype(auto) result = std::ranges::set_intersection(
         In1{in1.data()},
         Sent1{In1{in1.data() + in1.size()}},
@@ -120,7 +120,7 @@ constexpr void testSetIntersectionImpl(std::array<int, N1> in1, std::array<int, 
 
   // range overload
   {
-    std::array<int, N3> out;
+    TestArray<int, N3> out;
     std::ranges::subrange r1{In1{in1.data()}, Sent1{In1{in1.data() + in1.size()}}};
     std::ranges::subrange r2{In2{in2.data()}, Sent2{In2{in2.data() + in2.size()}}};
     std::same_as<set_intersection_result<In1, In2, Out>> decltype(auto) result =
@@ -137,102 +137,102 @@ template <class In1, class In2, class Out>
 constexpr void testImpl() {
   // range 1 shorter than range2
   {
-    std::array in1{0, 1, 5, 6, 9, 10};
-    std::array in2{3, 6, 7, 9, 13, 15, 100};
-    std::array expected{6, 9};
+    TestArray in1{0, 1, 5, 6, 9, 10};
+    TestArray in2{3, 6, 7, 9, 13, 15, 100};
+    TestArray expected{6, 9};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 2 shorter than range 1
   {
-    std::array in1{2, 6, 8, 12, 15, 16};
-    std::array in2{0, 2, 8};
-    std::array expected{2, 8};
+    TestArray in1{2, 6, 8, 12, 15, 16};
+    TestArray in2{0, 2, 8};
+    TestArray expected{2, 8};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 and range 2 has the same length but different elements
   {
-    std::array in1{2, 6, 8, 12, 15, 16};
-    std::array in2{0, 2, 8, 15, 17, 19};
-    std::array expected{2, 8, 15};
+    TestArray in1{2, 6, 8, 12, 15, 16};
+    TestArray in2{0, 2, 8, 15, 17, 19};
+    TestArray expected{2, 8, 15};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 == range 2
   {
-    std::array in1{0, 1, 2};
-    std::array in2{0, 1, 2};
-    std::array expected{0, 1, 2};
+    TestArray in1{0, 1, 2};
+    TestArray in2{0, 1, 2};
+    TestArray expected{0, 1, 2};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 is super set of range 2
   {
-    std::array in1{8, 8, 10, 12, 13};
-    std::array in2{8, 10};
-    std::array expected{8, 10};
+    TestArray in1{8, 8, 10, 12, 13};
+    TestArray in2{8, 10};
+    TestArray expected{8, 10};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 2 is super set of range 1
   {
-    std::array in1{0, 1, 1};
-    std::array in2{0, 1, 1, 2, 5};
-    std::array expected{0, 1, 1};
+    TestArray in1{0, 1, 1};
+    TestArray in2{0, 1, 1, 2, 5};
+    TestArray expected{0, 1, 1};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 and range 2 have no elements in common
   {
-    std::array in1{7, 7, 9, 12};
-    std::array in2{1, 5, 5, 8, 10};
-    std::array<int, 0> expected{};
+    TestArray in1{7, 7, 9, 12};
+    TestArray in2{1, 5, 5, 8, 10};
+    TestArray<int, 0> expected{};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 and range 2 have duplicated equal elements
   {
-    std::array in1{7, 7, 9, 12};
-    std::array in2{7, 7, 7, 13};
-    std::array expected{7, 7};
+    TestArray in1{7, 7, 9, 12};
+    TestArray in2{7, 7, 7, 13};
+    TestArray expected{7, 7};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 is empty
   {
-    std::array<int, 0> in1{};
-    std::array in2{3, 4, 5};
-    std::array<int, 0> expected{};
+    TestArray<int, 0> in1{};
+    TestArray in2{3, 4, 5};
+    TestArray<int, 0> expected{};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 2 is empty
   {
-    std::array in1{3, 4, 5};
-    std::array<int, 0> in2{};
-    std::array<int, 0> expected{};
+    TestArray in1{3, 4, 5};
+    TestArray<int, 0> in2{};
+    TestArray<int, 0> expected{};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // both ranges are empty
   {
-    std::array<int, 0> in1{};
-    std::array<int, 0> in2{};
-    std::array<int, 0> expected{};
+    TestArray<int, 0> in1{};
+    TestArray<int, 0> in2{};
+    TestArray<int, 0> expected{};
     testSetIntersectionImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // check that ranges::dangling is returned for non-borrowed_range
   {
-    std::array r1{3, 6, 7, 9};
+    TestArray r1{3, 6, 7, 9};
     int r2[] = {2, 3, 4, 5, 6};
-    std::array<int, 2> out;
+    TestArray<int, 2> out;
     std::same_as<set_intersection_result<std::ranges::dangling, int*, int*>> decltype(auto) result =
         std::ranges::set_intersection(NonBorrowedRange<In1>{r1.data(), r1.size()}, r2, out.data());
     assert(base(result.in2) == r2 + 5);
     assert(base(result.out) == out.data() + out.size());
-    assert(std::ranges::equal(out, std::array{3, 6}));
+    assert(std::ranges::equal(out, TestArray{3, 6}));
   }
 }
 
@@ -275,31 +275,31 @@ constexpr void runAllIteratorPermutationsTests() {
 constexpr bool test() {
   // check that every element is copied exactly once
   {
-    std::array<TracedCopy, 5> r1{3, 5, 8, 15, 16};
-    std::array<TracedCopy, 3> r2{1, 3, 8};
+    TestArray<TracedCopy, 5> r1{3, 5, 8, 15, 16};
+    TestArray<TracedCopy, 3> r2{1, 3, 8};
 
     // iterator overload
     {
-      std::array<TracedCopy, 2> out;
+      TestArray<TracedCopy, 2> out;
       auto result = std::ranges::set_intersection(r1.begin(), r1.end(), r2.begin(), r2.end(), out.data());
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
       assert(result.out == out.end());
-      assert(std::ranges::equal(out, std::array<TracedCopy, 2>{3, 8}));
+      assert(std::ranges::equal(out, TestArray<TracedCopy, 2>{3, 8}));
 
       assert(std::ranges::all_of(out, &TracedCopy::copiedOnce));
     }
 
     // range overload
     {
-      std::array<TracedCopy, 2> out;
+      TestArray<TracedCopy, 2> out;
       auto result = std::ranges::set_intersection(r1, r2, out.data());
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
       assert(result.out == out.end());
-      assert(std::ranges::equal(out, std::array<TracedCopy, 2>{3, 8}));
+      assert(std::ranges::equal(out, TestArray<TracedCopy, 2>{3, 8}));
 
       assert(std::ranges::all_of(out, &TracedCopy::copiedOnce));
     }
@@ -317,25 +317,25 @@ constexpr bool test() {
   // contains n elements that are equivalent to them, the first min(m, n) elements are copied from the first
   // range to the output range, in order.
   {
-    std::array<IntAndOrder, 5> r1{{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}}};
-    std::array<IntAndOrder, 3> r2{{{0, 5}, {0, 6}, {0, 7}}};
+    TestArray<IntAndOrder, 5> r1{{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}}};
+    TestArray<IntAndOrder, 3> r2{{{0, 5}, {0, 6}, {0, 7}}};
 
     // iterator overload
     {
-      std::array<IntAndOrder, 3> out;
+      TestArray<IntAndOrder, 3> out;
       std::ranges::set_intersection(r1.begin(), r1.end(), r2.begin(), r2.end(), out.data());
 
-      assert(std::ranges::equal(out, std::array{0, 0, 0}, {}, &IntAndOrder::data));
-      assert(std::ranges::equal(out, std::array{0, 1, 2}, {}, &IntAndOrder::order));
+      assert(std::ranges::equal(out, TestArray{0, 0, 0}, {}, &IntAndOrder::data));
+      assert(std::ranges::equal(out, TestArray{0, 1, 2}, {}, &IntAndOrder::order));
     }
 
     // range overload
     {
-      std::array<IntAndOrder, 3> out;
+      TestArray<IntAndOrder, 3> out;
       std::ranges::set_intersection(r1, r2, out.data());
 
-      assert(std::ranges::equal(out, std::array{0, 0, 0}, {}, &IntAndOrder::data));
-      assert(std::ranges::equal(out, std::array{0, 1, 2}, {}, &IntAndOrder::order));
+      assert(std::ranges::equal(out, TestArray{0, 0, 0}, {}, &IntAndOrder::data));
+      assert(std::ranges::equal(out, TestArray{0, 1, 2}, {}, &IntAndOrder::order));
     }
   }
 
@@ -347,18 +347,18 @@ constexpr bool test() {
 
   // Test custom comparator
   {
-    std::array r1{Data{4}, Data{8}, Data{12}};
-    std::array r2{Data{8}, Data{9}};
+    TestArray r1{Data{4}, Data{8}, Data{12}};
+    TestArray r2{Data{8}, Data{9}};
 
     // iterator overload
     {
-      std::array<Data, 1> out;
+      TestArray<Data, 1> out;
       auto result = std::ranges::set_intersection(
           r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), [](const Data& x, const Data& y) {
             return x.data < y.data;
           });
 
-      assert(std::ranges::equal(out, std::array{8}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{8}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -367,12 +367,12 @@ constexpr bool test() {
 
     // range overload
     {
-      std::array<Data, 1> out;
+      TestArray<Data, 1> out;
       auto result = std::ranges::set_intersection(r1, r2, out.data(), [](const Data& x, const Data& y) {
         return x.data < y.data;
       });
 
-      assert(std::ranges::equal(out, std::array{8}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{8}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -381,11 +381,11 @@ constexpr bool test() {
 
     // member pointer Comparator iterator overload
     {
-      std::array<Data, 1> out;
+      TestArray<Data, 1> out;
       auto result =
           std::ranges::set_intersection(r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), &Data::smallerThan);
 
-      assert(std::ranges::equal(out, std::array{8}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{8}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -394,10 +394,10 @@ constexpr bool test() {
 
     // member pointer Comparator range overload
     {
-      std::array<Data, 1> out;
+      TestArray<Data, 1> out;
       auto result = std::ranges::set_intersection(r1, r2, out.data(), &Data::smallerThan);
 
-      assert(std::ranges::equal(out, std::array{8}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{8}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -407,18 +407,18 @@ constexpr bool test() {
 
   // Test Projection
   {
-    std::array r1{Data{1}, Data{3}, Data{5}};
-    std::array r2{Data{2}, Data{3}, Data{5}};
+    TestArray r1{Data{1}, Data{3}, Data{5}};
+    TestArray r2{Data{2}, Data{3}, Data{5}};
 
     const auto proj = [](const Data& d) { return d.data; };
 
     // iterator overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       auto result = std::ranges::set_intersection(
           r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), std::ranges::less{}, proj, proj);
 
-      assert(std::ranges::equal(out, std::array{3, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{3, 5}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -427,10 +427,10 @@ constexpr bool test() {
 
     // range overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       auto result = std::ranges::set_intersection(r1, r2, out.data(), std::ranges::less{}, proj, proj);
 
-      assert(std::ranges::equal(out, std::array{3, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{3, 5}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -439,11 +439,11 @@ constexpr bool test() {
 
     // member pointer Projection iterator overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       auto result = std::ranges::set_intersection(
           r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), {}, &Data::data, &Data::data);
 
-      assert(std::ranges::equal(out, std::array{3, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{3, 5}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -452,10 +452,10 @@ constexpr bool test() {
 
     // member pointer Projection range overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       auto result = std::ranges::set_intersection(r1, r2, out.data(), std::ranges::less{}, &Data::data, &Data::data);
 
-      assert(std::ranges::equal(out, std::array{3, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{3, 5}, {}, &Data::data));
 
       assert(result.in1 == r1.end());
       assert(result.in2 == r2.end());
@@ -465,15 +465,15 @@ constexpr bool test() {
 
   // Complexity: At most 2 * ((last1 - first1) + (last2 - first2)) - 1 comparisons and applications of each projection.
   {
-    std::array<Data, 5> r1{{{1}, {3}, {5}, {7}, {9}}};
-    std::array<Data, 5> r2{{{2}, {4}, {6}, {8}, {10}}};
-    std::array<int, 0> expected{};
+    TestArray<Data, 5> r1{{{1}, {3}, {5}, {7}, {9}}};
+    TestArray<Data, 5> r2{{{2}, {4}, {6}, {8}, {10}}};
+    TestArray<int, 0> expected{};
 
     const std::size_t maxOperation = 2 * (r1.size() + r2.size()) - 1;
 
     // iterator overload
     {
-      std::array<Data, 0> out{};
+      TestArray<Data, 0> out{};
       std::size_t numberOfComp  = 0;
       std::size_t numberOfProj1 = 0;
       std::size_t numberOfProj2 = 0;
@@ -503,7 +503,7 @@ constexpr bool test() {
 
     // range overload
     {
-      std::array<Data, 0> out{};
+      TestArray<Data, 0> out{};
       std::size_t numberOfComp  = 0;
       std::size_t numberOfProj1 = 0;
       std::size_t numberOfProj2 = 0;
@@ -545,16 +545,16 @@ constexpr bool test() {
 
     // iterator overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::ranges::set_intersection(r1, r1 + 2, r2, r2 + 3, out.data(), comp);
-      assert(std::ranges::equal(out, std::array{3, 4}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{3, 4}, {}, &Data::data));
     }
 
     // range overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::ranges::set_intersection(r1, r2, out.data(), comp);
-      assert(std::ranges::equal(out, std::array{3, 4}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{3, 4}, {}, &Data::data));
     }
   }
 

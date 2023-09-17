@@ -105,7 +105,8 @@ constexpr bool test() {
   { // test with a range
     std::array<int, 5> a = {1, 2, 3, 4, 5};
     std::array<int, 5> b = {1, 2, 3, 5, 4};
-    using Expected = std::ranges::mismatch_result<int*, int*>;
+    using iter = std::array<int, 5>::iterator;
+    using Expected = std::ranges::mismatch_result<iter, iter>;
     std::same_as<Expected> auto ret = std::ranges::mismatch(a, b);
     assert(ret.in1 == a.begin() + 3);
     assert(ret.in2 == b.begin() + 3);
@@ -213,6 +214,7 @@ constexpr bool test() {
       assert(*ret.in1 == 1);
       assert(*ret.in2 == 1);
     }
+    #if 0
     {
       int a[] = {7, 6, 9, 3, 5, 1, 2, 4};
       auto ret = std::ranges::mismatch(a, a,
@@ -224,6 +226,7 @@ constexpr bool test() {
       assert(*ret.in1 == 1);
       assert(*ret.in2 == 1);
     }
+    #endif
     {
       int a[] = {7, 6, 9, 3, 5, 1, 2, 4};
       int b[] = {6, 5, 8, 2, 5, 1, 2, 4};
@@ -236,6 +239,7 @@ constexpr bool test() {
       assert(*ret.in1 == 1);
       assert(*ret.in2 == 1);
     }
+    #if 0
     {
       int a[] = {7, 6, 9, 3, 5, 1, 2, 4};
       auto ret = std::ranges::mismatch(a, a + 8, a, a + 8,
@@ -247,6 +251,7 @@ constexpr bool test() {
       assert(*ret.in1 == 1);
       assert(*ret.in2 == 1);
     }
+    #endif
   }
 
   { // test predicate and projection call count

@@ -22,7 +22,7 @@
 //     ranges::nth_element(R&& r, iterator_t<R> nth, Comp comp = {}, Proj proj = {});          // since C++20
 
 #include <algorithm>
-#include <array>
+#include <test_array.h>
 #include <concepts>
 #include <functional>
 #include <iterator>
@@ -65,7 +65,7 @@ static_assert(!HasNthElementR<UncheckedRange<int*>, BadComparator>);
 static_assert(!HasNthElementR<UncheckedRange<const int*>>); // Doesn't satisfy `sortable`.
 
 template <size_t N, class T, class Iter>
-constexpr void verify_nth(const std::array<T, N>& partially_sorted, size_t nth_index, Iter last, T expected_nth) {
+constexpr void verify_nth(const TestArray<T, N>& partially_sorted, size_t nth_index, Iter last, T expected_nth) {
   // Note that the exact output of `nth_element` is unspecified and may vary between implementations.
 
   assert(base(last) == partially_sorted.end());
@@ -93,7 +93,7 @@ constexpr void verify_nth(const std::array<T, N>& partially_sorted, size_t nth_i
 }
 
 template <class Iter, class Sent, size_t N>
-constexpr void test_one(std::array<int, N> input, size_t nth_index, std::optional<int> expected_nth = {}) {
+constexpr void test_one(TestArray<int, N> input, size_t nth_index, std::optional<int> expected_nth = {}) {
   assert(expected_nth || nth_index == N);
 
   { // (iterator, sentinel) overload.
@@ -127,7 +127,7 @@ constexpr void test_one(std::array<int, N> input, size_t nth_index, std::optiona
 }
 
 template <class Iter, class Sent, size_t N>
-constexpr void test_all_cases(std::array<int, N> input) {
+constexpr void test_all_cases(TestArray<int, N> input) {
   auto sorted = input;
   std::sort(sorted.begin(), sorted.end());
 
@@ -143,37 +143,37 @@ constexpr void test_iterators() {
     test_one<Iter, Sent, 0>({}, 0);
 
     // 1-element sequence.
-    test_all_cases<Iter, Sent>(std::array{1});
+    test_all_cases<Iter, Sent>(TestArray{1});
 
     // 2-element sequence.
-    test_all_cases<Iter, Sent>(std::array{2, 1});
+    test_all_cases<Iter, Sent>(TestArray{2, 1});
 
     // 3-element sequence.
-    test_all_cases<Iter, Sent>(std::array{2, 1, 3});
+    test_all_cases<Iter, Sent>(TestArray{2, 1, 3});
 
     // Longer sequence.
-    test_all_cases<Iter, Sent>(std::array{2, 1, 3, 6, 8, 4, 11, 5});
+    test_all_cases<Iter, Sent>(TestArray{2, 1, 3, 6, 8, 4, 11, 5});
 
     // Longer sequence with duplicates.
-    test_all_cases<Iter, Sent>(std::array{2, 1, 3, 6, 2, 8, 6});
+    test_all_cases<Iter, Sent>(TestArray{2, 1, 3, 6, 2, 8, 6});
 
     // All elements are the same.
-    test_all_cases<Iter, Sent>(std::array{1, 1, 1, 1});
+    test_all_cases<Iter, Sent>(TestArray{1, 1, 1, 1});
 
     { // nth element is in the right place.
-      std::array input = {6, 5, 3, 1, 4, 2};
+      TestArray input = {6, 5, 3, 1, 4, 2};
       constexpr size_t N = input.size();
       test_one<Iter, Sent, N>(input, 2, /*expected_nth=*/3);
     }
 
     // Already sorted.
-    test_all_cases<Iter, Sent>(std::array{1, 2, 3, 4, 5, 6});
+    test_all_cases<Iter, Sent>(TestArray{1, 2, 3, 4, 5, 6});
 
     // Descending.
-    test_all_cases<Iter, Sent>(std::array{6, 5, 4, 3, 2, 1});
+    test_all_cases<Iter, Sent>(TestArray{6, 5, 4, 3, 2, 1});
 
     // Repeating pattern.
-    test_all_cases<Iter, Sent>(std::array{2, 1, 2, 1, 2, 1});
+    test_all_cases<Iter, Sent>(TestArray{2, 1, 2, 1, 2, 1});
   };
 
   check.operator()<random_access_iterator<int*>, random_access_iterator<int*>>();
@@ -188,7 +188,7 @@ constexpr bool test() {
   test_iterators();
 
   { // A custom comparator works.
-    const std::array input = {1, 2, 3, 4, 5};
+    const TestArray input = {1, 2, 3, 4, 5};
     std::ranges::greater comp;
 
     {
@@ -212,7 +212,7 @@ constexpr bool test() {
       constexpr bool operator==(const A&) const = default;
     };
 
-    const std::array input = {A{2}, A{1}, A{3}};
+    const TestArray input = {A{2}, A{1}, A{3}};
 
     {
       auto in = input;
@@ -240,7 +240,7 @@ constexpr bool test() {
       constexpr bool operator==(const S&) const = default;
     };
 
-    const std::array input = {S{2}, S{1}, S{3}};
+    const TestArray input = {S{2}, S{1}, S{3}};
 
     {
       auto in = input;
@@ -258,18 +258,18 @@ constexpr bool test() {
   }
 
   { // The comparator can return any type that's convertible to `bool`.
-    const std::array input = {2, 1, 3};
+    const TestArray input = {2, 1, 3};
     auto pred = [](int i, int j) { return BooleanTestable{i < j}; };
 
     {
-      std::array in = input;
+      TestArray in = input;
       auto last = std::ranges::nth_element(in.begin(), in.begin() + 1, in.end(), pred);
       assert(in[1] == 2);
       assert(last == in.end());
     }
 
     {
-      std::array in = input;
+      TestArray in = input;
       auto last = std::ranges::nth_element(in, in.begin() + 1, pred);
       assert(in[1] == 2);
       assert(last == in.end());
@@ -277,7 +277,7 @@ constexpr bool test() {
   }
 
   { // `std::ranges::dangling` is returned.
-    std::array in{1, 2, 3};
+    TestArray in{1, 2, 3};
     [[maybe_unused]] std::same_as<std::ranges::dangling> decltype(auto) result =
         std::ranges::nth_element(std::move(in), in.begin());
   }

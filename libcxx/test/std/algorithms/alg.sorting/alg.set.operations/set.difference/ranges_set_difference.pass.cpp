@@ -27,7 +27,7 @@
 //                    Comp comp = {}, Proj1 proj1 = {}, Proj2 proj2 = {});                           // since C++20
 
 #include <algorithm>
-#include <array>
+#include <test_array.h>
 #include <concepts>
 
 #include "almost_satisfies_types.h"
@@ -100,7 +100,7 @@ static_assert(!HasSetDifferenceRange< UncheckedRange<MoveOnly*>, UncheckedRange<
 using std::ranges::set_difference_result;
 
 template <class In1, class In2, class Out, std::size_t N1, std::size_t N2, std::size_t N3>
-constexpr void testSetDifferenceImpl(std::array<int, N1> in1, std::array<int, N2> in2, std::array<int, N3> expected) {
+constexpr void testSetDifferenceImpl(TestArray<int, N1> in1, TestArray<int, N2> in2, TestArray<int, N3> expected) {
   // TODO: std::ranges::set_difference calls std::ranges::copy
   // std::ranges::copy(contiguous_iterator<int*>, sentinel_wrapper<contiguous_iterator<int*>>, contiguous_iterator<int*>) doesn't seem to work.
   // It seems that std::ranges::copy calls std::copy, which unwraps contiguous_iterator<int*> into int*,
@@ -110,7 +110,7 @@ constexpr void testSetDifferenceImpl(std::array<int, N1> in1, std::array<int, N2
 
   // iterator overload
   {
-    std::array<int, N3> out;
+    TestArray<int, N3> out;
     std::same_as<set_difference_result<In1, Out>> decltype(auto) result = std::ranges::set_difference(
         In1{in1.data()},
         Sent1{In1{in1.data() + in1.size()}},
@@ -125,7 +125,7 @@ constexpr void testSetDifferenceImpl(std::array<int, N1> in1, std::array<int, N2
 
   // range overload
   {
-    std::array<int, N3> out;
+    TestArray<int, N3> out;
     std::ranges::subrange r1{In1{in1.data()}, Sent1{In1{in1.data() + in1.size()}}};
     std::ranges::subrange r2{In2{in2.data()}, Sent2{In2{in2.data() + in2.size()}}};
     std::same_as<set_difference_result<In1, Out>> decltype(auto) result =
@@ -141,85 +141,85 @@ template <class In1, class In2, class Out>
 constexpr void testImpl() {
   // range 1 shorter than range2
   {
-    std::array in1{0, 1, 5, 6, 9, 10};
-    std::array in2{3, 6, 7, 9, 13, 15, 100};
-    std::array expected{0, 1, 5, 10};
+    TestArray in1{0, 1, 5, 6, 9, 10};
+    TestArray in2{3, 6, 7, 9, 13, 15, 100};
+    TestArray expected{0, 1, 5, 10};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 2 shorter than range 1
   {
-    std::array in1{2, 6, 8, 12, 15, 16};
-    std::array in2{0, 2, 8};
-    std::array expected{6, 12, 15, 16};
+    TestArray in1{2, 6, 8, 12, 15, 16};
+    TestArray in2{0, 2, 8};
+    TestArray expected{6, 12, 15, 16};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 and range 2 has the same length but different elements
   {
-    std::array in1{2, 6, 8, 12, 15, 16};
-    std::array in2{0, 2, 8, 15, 17, 19};
-    std::array expected{6, 12, 16};
+    TestArray in1{2, 6, 8, 12, 15, 16};
+    TestArray in2{0, 2, 8, 15, 17, 19};
+    TestArray expected{6, 12, 16};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 == range 2
   {
-    std::array in1{0, 1, 2};
-    std::array in2{0, 1, 2};
-    std::array<int, 0> expected{};
+    TestArray in1{0, 1, 2};
+    TestArray in2{0, 1, 2};
+    TestArray<int, 0> expected{};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 is super set of range 2
   {
-    std::array in1{8, 8, 10, 12, 13};
-    std::array in2{8, 10};
-    std::array expected{8, 12, 13};
+    TestArray in1{8, 8, 10, 12, 13};
+    TestArray in2{8, 10};
+    TestArray expected{8, 12, 13};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 2 is super set of range 1
   {
-    std::array in1{0, 1, 1};
-    std::array in2{0, 1, 1, 2, 5};
-    std::array<int, 0> expected{};
+    TestArray in1{0, 1, 1};
+    TestArray in2{0, 1, 1, 2, 5};
+    TestArray<int, 0> expected{};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 1 is empty
   {
-    std::array<int, 0> in1{};
-    std::array in2{3, 4, 5};
-    std::array<int, 0> expected{};
+    TestArray<int, 0> in1{};
+    TestArray in2{3, 4, 5};
+    TestArray<int, 0> expected{};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // range 2 is empty
   {
-    std::array in1{3, 4, 5};
-    std::array<int, 0> in2{};
-    std::array expected{3, 4, 5};
+    TestArray in1{3, 4, 5};
+    TestArray<int, 0> in2{};
+    TestArray expected{3, 4, 5};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // both ranges are empty
   {
-    std::array<int, 0> in1{};
-    std::array<int, 0> in2{};
-    std::array<int, 0> expected{};
+    TestArray<int, 0> in1{};
+    TestArray<int, 0> in2{};
+    TestArray<int, 0> expected{};
     testSetDifferenceImpl<In1, In2, Out>(in1, in2, expected);
   }
 
   // check that ranges::dangling is returned for non-borrowed_range
   {
-    std::array r1{3, 6, 7, 9};
-    std::array r2{2, 3, 4, 5, 6};
-    std::array<int, 2> out;
+    TestArray r1{3, 6, 7, 9};
+    TestArray r2{2, 3, 4, 5, 6};
+    TestArray<int, 2> out;
     std::same_as<set_difference_result<std::ranges::dangling, int*>> decltype(auto) result =
         std::ranges::set_difference(NonBorrowedRange<In1>{r1.data(), r1.size()}, r2, out.data());
     assert(base(result.out) == out.data() + out.size());
-    assert(std::ranges::equal(out, std::array{7, 9}));
+    assert(std::ranges::equal(out, TestArray{7, 9}));
   }
 }
 
@@ -262,29 +262,29 @@ constexpr void runAllIteratorPermutationsTests() {
 constexpr bool test() {
   // check that every element is copied exactly once
   {
-    std::array<TracedCopy, 5> r1{3, 5, 8, 15, 16};
-    std::array<TracedCopy, 3> r2{1, 3, 8};
+    TestArray<TracedCopy, 5> r1{3, 5, 8, 15, 16};
+    TestArray<TracedCopy, 3> r2{1, 3, 8};
 
     // iterator overload
     {
-      std::array<TracedCopy, 3> out;
+      TestArray<TracedCopy, 3> out;
       auto result = std::ranges::set_difference(r1.begin(), r1.end(), r2.begin(), r2.end(), out.data());
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
-      assert(std::ranges::equal(out, std::array<TracedCopy, 3>{5, 15, 16}));
+      assert(std::ranges::equal(out, TestArray<TracedCopy, 3>{5, 15, 16}));
 
       assert(std::ranges::all_of(out, &TracedCopy::copiedOnce));
     }
 
     // range overload
     {
-      std::array<TracedCopy, 3> out;
+      TestArray<TracedCopy, 3> out;
       auto result = std::ranges::set_difference(r1, r2, out.data());
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
-      assert(std::ranges::equal(out, std::array<TracedCopy, 3>{5, 15, 16}));
+      assert(std::ranges::equal(out, TestArray<TracedCopy, 3>{5, 15, 16}));
 
       assert(std::ranges::all_of(out, &TracedCopy::copiedOnce));
     }
@@ -300,27 +300,27 @@ constexpr bool test() {
 
   // equal elements should be copied in the original order and only m-n elements are copied
   {
-    std::array<IntAndOrder, 5> r1{{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}}};
-    std::array<IntAndOrder, 3> r2{{{0, 1}, {0, 2}, {0, 3}}};
+    TestArray<IntAndOrder, 5> r1{{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}}};
+    TestArray<IntAndOrder, 3> r2{{{0, 1}, {0, 2}, {0, 3}}};
 
     // iterator overload
     {
-      std::array<IntAndOrder, 2> out;
+      TestArray<IntAndOrder, 2> out;
       std::ranges::set_difference(r1.begin(), r1.end(), r2.begin(), r2.end(), out.data());
 
-      assert(std::ranges::equal(out, std::array{0, 0}, {}, &IntAndOrder::data));
+      assert(std::ranges::equal(out, TestArray{0, 0}, {}, &IntAndOrder::data));
       // m-n elements are copied in order
-      assert(std::ranges::equal(out, std::array{3, 4}, {}, &IntAndOrder::order));
+      assert(std::ranges::equal(out, TestArray{3, 4}, {}, &IntAndOrder::order));
     }
 
     // range overload
     {
-      std::array<IntAndOrder, 2> out;
+      TestArray<IntAndOrder, 2> out;
       std::ranges::set_difference(r1, r2, out.data());
 
-      assert(std::ranges::equal(out, std::array{0, 0}, {}, &IntAndOrder::data));
+      assert(std::ranges::equal(out, TestArray{0, 0}, {}, &IntAndOrder::data));
       // ID should be in their original order
-      assert(std::ranges::equal(out, std::array{3, 4}, {}, &IntAndOrder::order));
+      assert(std::ranges::equal(out, TestArray{3, 4}, {}, &IntAndOrder::order));
     }
   }
 
@@ -332,19 +332,19 @@ constexpr bool test() {
 
   // Test custom comparator
   {
-    std::array r1{Data{4}, Data{8}, Data{12}};
-    std::array r2{Data{8}, Data{9}};
-    using Iter1 = std::array<Data, 3>::iterator;
+    TestArray r1{Data{4}, Data{8}, Data{12}};
+    TestArray r2{Data{8}, Data{9}};
+    using Iter1 = TestArray<Data, 3>::iterator;
 
     // iterator overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result = std::ranges::set_difference(
           r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), [](const Data& x, const Data& y) {
             return x.data < y.data;
           });
 
-      assert(std::ranges::equal(out, std::array{4, 12}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{4, 12}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -352,11 +352,11 @@ constexpr bool test() {
 
     // range overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result =
           std::ranges::set_difference(r1, r2, out.data(), [](const Data& x, const Data& y) { return x.data < y.data; });
 
-      assert(std::ranges::equal(out, std::array{4, 12}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{4, 12}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -364,11 +364,11 @@ constexpr bool test() {
 
     // member pointer Comparator iterator overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result =
           std::ranges::set_difference(r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), &Data::smallerThan);
 
-      assert(std::ranges::equal(out, std::array{4, 12}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{4, 12}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -376,11 +376,11 @@ constexpr bool test() {
 
     // member pointer Comparator range overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result =
           std::ranges::set_difference(r1, r2, out.data(), &Data::smallerThan);
 
-      assert(std::ranges::equal(out, std::array{4, 12}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{4, 12}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -389,19 +389,19 @@ constexpr bool test() {
 
   // Test Projection
   {
-    std::array r1{Data{1}, Data{3}, Data{5}};
-    std::array r2{Data{2}, Data{3}, Data{4}};
-    using Iter1 = std::array<Data, 3>::iterator;
+    TestArray r1{Data{1}, Data{3}, Data{5}};
+    TestArray r2{Data{2}, Data{3}, Data{4}};
+    using Iter1 = TestArray<Data, 3>::iterator;
 
     const auto proj = [](const Data& d) { return d.data; };
 
     // iterator overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result = std::ranges::set_difference(
           r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), std::ranges::less{}, proj, proj);
 
-      assert(std::ranges::equal(out, std::array{1, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{1, 5}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -409,11 +409,11 @@ constexpr bool test() {
 
     // range overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result =
           std::ranges::set_difference(r1, r2, out.data(), std::ranges::less{}, proj, proj);
 
-      assert(std::ranges::equal(out, std::array{1, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{1, 5}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -421,11 +421,11 @@ constexpr bool test() {
 
     // member pointer Projection iterator overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result = std::ranges::set_difference(
           r1.begin(), r1.end(), r2.begin(), r2.end(), out.data(), {}, &Data::data, &Data::data);
 
-      assert(std::ranges::equal(out, std::array{1, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{1, 5}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -433,11 +433,11 @@ constexpr bool test() {
 
     // member pointer Projection range overload
     {
-      std::array<Data, 2> out;
+      TestArray<Data, 2> out;
       std::same_as<set_difference_result<Iter1, Data*>> decltype(auto) result =
           std::ranges::set_difference(r1, r2, out.data(), std::ranges::less{}, &Data::data, &Data::data);
 
-      assert(std::ranges::equal(out, std::array{1, 5}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{1, 5}, {}, &Data::data));
 
       assert(result.in == r1.end());
       assert(result.out == out.end());
@@ -446,15 +446,15 @@ constexpr bool test() {
 
   // Complexity: At most 2 * ((last1 - first1) + (last2 - first2)) - 1 comparisons and applications of each projection.
   {
-    std::array<Data, 3> r1{{{4}, {8}, {12}}};
-    std::array<Data, 9> r2{{{1}, {2}, {3}, {5}, {6}, {7}, {9}, {10}, {11}}};
-    std::array expected{4, 8, 12};
+    TestArray<Data, 3> r1{{{4}, {8}, {12}}};
+    TestArray<Data, 9> r2{{{1}, {2}, {3}, {5}, {6}, {7}, {9}, {10}, {11}}};
+    TestArray expected{4, 8, 12};
 
     const std::size_t maxOperation = 2 * (r1.size() + r2.size()) - 1;
 
     // iterator overload
     {
-      std::array<Data, 3> out;
+      TestArray<Data, 3> out;
       std::size_t numberOfComp  = 0;
       std::size_t numberOfProj1 = 0;
       std::size_t numberOfProj2 = 0;
@@ -484,7 +484,7 @@ constexpr bool test() {
 
     // range overload
     {
-      std::array<Data, 3> out;
+      TestArray<Data, 3> out;
       std::size_t numberOfComp  = 0;
       std::size_t numberOfProj1 = 0;
       std::size_t numberOfProj2 = 0;
@@ -526,16 +526,16 @@ constexpr bool test() {
 
     // iterator overload
     {
-      std::array<Data, 1> out;
+      TestArray<Data, 1> out;
       std::ranges::set_difference(r1, r1 + 2, r2, r2 + 3, out.data(), comp);
-      assert(std::ranges::equal(out, std::array{2}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{2}, {}, &Data::data));
     }
 
     // range overload
     {
-      std::array<Data, 1> out;
+      TestArray<Data, 1> out;
       std::ranges::set_difference(r1, r2, out.data(), comp);
-      assert(std::ranges::equal(out, std::array{2}, {}, &Data::data));
+      assert(std::ranges::equal(out, TestArray{2}, {}, &Data::data));
     }
   }
 

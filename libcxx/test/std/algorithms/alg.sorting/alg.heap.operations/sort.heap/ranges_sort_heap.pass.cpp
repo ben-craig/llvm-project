@@ -22,7 +22,7 @@
 //     ranges::sort_heap(R&& r, Comp comp = {}, Proj proj = {});                             // since C++20
 
 #include <algorithm>
-#include <array>
+#include <test_array.h>
 #include <concepts>
 #include <functional>
 #include <ranges>
@@ -59,14 +59,14 @@ static_assert(!HasSortHeapR<UncheckedRange<int*>, BadComparator>);
 static_assert(!HasSortHeapR<UncheckedRange<const int*>>); // Doesn't satisfy `sortable`.
 
 template <size_t N, class T, class Iter>
-constexpr void verify_sorted(const std::array<T, N>& sorted, Iter last, std::array<T, N> expected) {
+constexpr void verify_sorted(const TestArray<T, N>& sorted, Iter last, TestArray<T, N> expected) {
   assert(sorted == expected);
   assert(base(last) == sorted.data() + sorted.size());
   assert(std::is_sorted(sorted.begin(), sorted.end()));
 }
 
 template <class Iter, class Sent, size_t N>
-constexpr void test_one(const std::array<int, N> input, std::array<int, N> expected) {
+constexpr void test_one(const TestArray<int, N> input, TestArray<int, N> expected) {
   assert(std::is_heap(input.begin(), input.end()));
 
   { // (iterator, sentinel) overload.
@@ -121,8 +121,8 @@ constexpr bool test() {
   test_iterators();
 
   { // A custom comparator works.
-    const std::array input = {1, 2, 3, 5, 4};
-    std::array expected = {5, 4, 3, 2, 1};
+    const TestArray input = {1, 2, 3, 5, 4};
+    TestArray expected = {5, 4, 3, 2, 1};
     auto comp = std::ranges::greater{};
     assert(std::is_heap(input.begin(), input.end(), comp));
 
@@ -147,8 +147,8 @@ constexpr bool test() {
       constexpr auto operator<=>(const A&) const = default;
     };
 
-    const std::array input = {A{3}, A{1}, A{2}};
-    std::array expected = {A{1}, A{2}, A{3}};
+    const TestArray input = {A{3}, A{1}, A{2}};
+    TestArray expected = {A{1}, A{2}, A{3}};
     {
       auto in = input;
       auto last = std::ranges::sort_heap(in.begin(), in.end(), {}, &A::a);
@@ -173,8 +173,8 @@ constexpr bool test() {
       constexpr auto operator<=>(const A&) const = default;
     };
 
-    const std::array input = {A{3}, A{1}, A{2}};
-    std::array expected = {A{1}, A{2}, A{3}};
+    const TestArray input = {A{3}, A{1}, A{2}};
+    TestArray expected = {A{1}, A{2}, A{3}};
     {
       auto in = input;
       auto last = std::ranges::sort_heap(in.begin(), in.end(), &A::comparator, &A::projection);
@@ -189,8 +189,8 @@ constexpr bool test() {
   }
 
   { // The comparator can return any type that's convertible to `bool`.
-    const std::array input = {3, 1, 2};
-    std::array expected = {1, 2, 3};
+    const TestArray input = {3, 1, 2};
+    TestArray expected = {1, 2, 3};
     {
       auto in = input;
       auto last = std::ranges::sort_heap(in.begin(), in.end(), [](int i, int j) { return BooleanTestable{i < j}; });
@@ -206,7 +206,7 @@ constexpr bool test() {
 
   { // `std::ranges::dangling` is returned.
     [[maybe_unused]] std::same_as<std::ranges::dangling> decltype(auto) result =
-        std::ranges::sort_heap(std::array{2, 1, 3});
+        std::ranges::sort_heap(TestArray{2, 1, 3});
   }
 
   return true;

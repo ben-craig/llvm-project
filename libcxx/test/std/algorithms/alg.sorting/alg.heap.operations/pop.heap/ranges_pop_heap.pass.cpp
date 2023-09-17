@@ -22,7 +22,7 @@
 //     ranges::pop_heap(R&& r, Comp comp = {}, Proj proj = {});                              // since C++20
 
 #include <algorithm>
-#include <array>
+#include <test_array.h>
 #include <concepts>
 #include <functional>
 #include <ranges>
@@ -59,7 +59,7 @@ static_assert(!HasPopHeapR<UncheckedRange<int*>, BadComparator>);
 static_assert(!HasPopHeapR<UncheckedRange<const int*>>); // Doesn't satisfy `sortable`.
 
 template <size_t N, class T, class Iter>
-constexpr void verify_heap(const std::array<T, N>& heapified, Iter last, std::array<T, N> expected) {
+constexpr void verify_heap(const TestArray<T, N>& heapified, Iter last, TestArray<T, N> expected) {
   assert(heapified == expected);
   assert(base(last) == heapified.data() + heapified.size());
   assert(std::is_heap(heapified.begin(), heapified.end() - 1));
@@ -67,7 +67,7 @@ constexpr void verify_heap(const std::array<T, N>& heapified, Iter last, std::ar
 }
 
 template <class Iter, class Sent, size_t N>
-constexpr void test_one(const std::array<int, N> input, std::array<int, N> expected) {
+constexpr void test_one(const TestArray<int, N> input, TestArray<int, N> expected) {
   assert(!input.empty());
   assert(std::is_heap(input.begin(), input.end()));
 
@@ -123,8 +123,8 @@ constexpr bool test() {
   test_iterators();
 
   { // A custom comparator works.
-    const std::array input = {1, 2, 3, 5, 4};
-    std::array expected = {2, 4, 3, 5, 1};
+    const TestArray input = {1, 2, 3, 5, 4};
+    TestArray expected = {2, 4, 3, 5, 1};
     auto comp = std::ranges::greater{};
     {
       auto in = input;
@@ -149,8 +149,8 @@ constexpr bool test() {
       constexpr auto operator<=>(const A&) const = default;
     };
 
-    const std::array input = {A{3}, A{1}, A{2}};
-    std::array expected = {A{2}, A{1}, A{3}};
+    const TestArray input = {A{3}, A{1}, A{2}};
+    TestArray expected = {A{2}, A{1}, A{3}};
     {
       auto in = input;
       auto last = std::ranges::pop_heap(in.begin(), in.end(), {}, &A::a);
@@ -175,8 +175,8 @@ constexpr bool test() {
       constexpr auto operator<=>(const A&) const = default;
     };
 
-    const std::array input = {A{3}, A{1}, A{2}};
-    std::array expected = {A{2}, A{1}, A{3}};
+    const TestArray input = {A{3}, A{1}, A{2}};
+    TestArray expected = {A{2}, A{1}, A{3}};
     {
       auto in = input;
       auto last = std::ranges::pop_heap(in.begin(), in.end(), &A::comparator, &A::projection);
@@ -191,8 +191,8 @@ constexpr bool test() {
   }
 
   { // The comparator can return any type that's convertible to `bool`.
-    const std::array input = {3, 1, 2};
-    std::array expected = {2, 1, 3};
+    const TestArray input = {3, 1, 2};
+    TestArray expected = {2, 1, 3};
     {
       auto in = input;
       auto last = std::ranges::pop_heap(in.begin(), in.end(), [](int i, int j) { return BooleanTestable{i < j}; });
@@ -208,7 +208,7 @@ constexpr bool test() {
 
   { // `std::ranges::dangling` is returned.
     [[maybe_unused]] std::same_as<std::ranges::dangling> decltype(auto) result =
-        std::ranges::pop_heap(std::array{2, 1, 3});
+        std::ranges::pop_heap(TestArray{2, 1, 3});
   }
 
   return true;

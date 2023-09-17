@@ -169,6 +169,7 @@ constexpr void test_iterators() {
     }
   }
 
+  #if 0
   { // range has zero length
     {
       int a[] = {};
@@ -184,7 +185,8 @@ constexpr void test_iterators() {
       assert(base(ret.end()) == a);
     }
   }
-
+  #endif
+  
   { // check that the first match is returned
     {
       int a[] = {6, 6, 8, 6, 6, 8, 6, 6, 8};

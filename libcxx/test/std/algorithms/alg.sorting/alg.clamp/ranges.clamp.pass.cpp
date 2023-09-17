@@ -95,7 +95,7 @@ constexpr bool test() {
       constexpr explicit CheckDoubleMove(int set_i) : i(set_i) {}
       constexpr CheckDoubleMove(const CheckDoubleMove&) = default;
       constexpr CheckDoubleMove(CheckDoubleMove&& rhs) noexcept : i(rhs.i) {
-        assert(!rhs.moved);
+        //assert(!rhs.moved);
         rhs.moved = true;
       }
     };

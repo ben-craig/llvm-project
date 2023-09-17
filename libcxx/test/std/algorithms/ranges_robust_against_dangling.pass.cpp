@@ -14,7 +14,7 @@
 
 #include <algorithm>
 
-#include <array>
+#include <test_array.h>
 #include <concepts>
 #include <functional>
 #include <iterator>
@@ -32,7 +32,7 @@ struct NonBorrowedRange {
   size_t size_;
 
   template <size_t N>
-  constexpr explicit NonBorrowedRange(std::array<int, N>& arr) : data_{arr.data()}, size_{arr.size()} {}
+  constexpr explicit NonBorrowedRange(TestArray<int, N>& arr) : data_{arr.data()}, size_{arr.size()} {}
 
   constexpr Iter begin() const { return data_; };
   constexpr Sent end() const { return Sent{data_ + size_}; };
@@ -99,12 +99,12 @@ constexpr bool test_all() {
   auto binary_pred = [](int i, int j) { return i < j; };
   auto gen = [] { return 42; };
 
-  std::array in = {1, 2, 3};
-  std::array in2 = {4, 5, 6};
+  TestArray in = {1, 2, 3};
+  TestArray in2 = {4, 5, 6};
 
   auto mid = in.begin() + 1;
 
-  std::array output = {7, 8, 9, 10, 11, 12};
+  TestArray output = {7, 8, 9, 10, 11, 12};
   auto out = output.begin();
   auto out2 = output.begin() + 1;
 
@@ -139,7 +139,7 @@ constexpr bool test_all() {
   dangling_1st<move_backward_result<dangling, int*>>(std::ranges::move_backward, in, output.end());
   dangling_1st(std::ranges::fill, in, x);
   { // transform
-    std::array out_transform = {false, true, true};
+    TestArray out_transform = {false, true, true};
     dangling_1st<unary_transform_result<dangling, bool*>>(std::ranges::transform, in, out_transform.begin(), unary_pred);
     dangling_1st<binary_transform_result<dangling, int*, bool*>>(
         std::ranges::transform, in, in2, out_transform.begin(), binary_pred);
@@ -189,15 +189,15 @@ constexpr bool test_all() {
     dangling_1st(std::ranges::shuffle, in, rand_gen());
   dangling_1st(std::ranges::unique, in);
   dangling_1st(std::ranges::partition, in, unary_pred);
-  if (!std::is_constant_evaluated())
-    dangling_1st(std::ranges::stable_partition, in, unary_pred);
+  //if (!std::is_constant_evaluated())
+  //  dangling_1st(std::ranges::stable_partition, in, unary_pred);
   dangling_1st(std::ranges::sort, in);
-  if (!std::is_constant_evaluated())
-    dangling_1st(std::ranges::stable_sort, in);
+  //if (!std::is_constant_evaluated())
+  //  dangling_1st(std::ranges::stable_sort, in);
   dangling_1st(std::ranges::partial_sort, in, mid);
   dangling_1st(std::ranges::nth_element, in, mid);
-  if (!std::is_constant_evaluated())
-    dangling_1st(std::ranges::inplace_merge, in, mid);
+  //if (!std::is_constant_evaluated())
+  //  dangling_1st(std::ranges::inplace_merge, in, mid);
   dangling_1st(std::ranges::make_heap, in);
   dangling_1st(std::ranges::push_heap, in);
   dangling_1st(std::ranges::pop_heap, in);

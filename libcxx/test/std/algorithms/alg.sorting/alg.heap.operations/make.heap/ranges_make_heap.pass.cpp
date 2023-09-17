@@ -22,7 +22,7 @@
 //     ranges::make_heap(R&& r, Comp comp = {}, Proj proj = {});                             // since C++20
 
 #include <algorithm>
-#include <array>
+#include <test_array.h>
 #include <concepts>
 #include <functional>
 #include <ranges>
@@ -59,18 +59,18 @@ static_assert(!HasMakeHeapR<UncheckedRange<int*>, BadComparator>);
 static_assert(!HasMakeHeapR<UncheckedRange<const int*>>); // Doesn't satisfy `sortable`.
 
 template <size_t N, class T, class Iter>
-constexpr void verify_heap(const std::array<T, N>& heapified, Iter last, std::array<T, N> expected) {
+constexpr void verify_heap(const TestArray<T, N>& heapified, Iter last, TestArray<T, N> expected) {
   assert(heapified == expected);
-  assert(base(last) == heapified.data() + heapified.size());
+  assert(base(last) == heapified.end());
   assert(std::is_heap(heapified.begin(), heapified.end()));
 }
 
 template <class Iter, class Sent, size_t N>
-constexpr void test_one(const std::array<int, N> input, std::array<int, N> expected) {
+constexpr void test_one(const TestArray<int, N> input, TestArray<int, N> expected) {
   { // (iterator, sentinel) overload.
     auto heapified = input;
-    auto b = Iter(heapified.data());
-    auto e = Sent(Iter(heapified.data() + heapified.size()));
+    auto b = Iter(heapified.begin());
+    auto e = Sent(Iter(heapified.end()));
 
     std::same_as<Iter> decltype(auto) last = std::ranges::make_heap(b, e);
     verify_heap(heapified, last, expected);
@@ -78,8 +78,8 @@ constexpr void test_one(const std::array<int, N> input, std::array<int, N> expec
 
   { // (range) overload.
     auto heapified = input;
-    auto b = Iter(heapified.data());
-    auto e = Sent(Iter(heapified.data() + heapified.size()));
+    auto b = Iter(heapified.begin());
+    auto e = Sent(Iter(heapified.end()));
     auto range = std::ranges::subrange(b, e);
 
     std::same_as<Iter> decltype(auto) last = std::ranges::make_heap(range);
@@ -127,8 +127,8 @@ constexpr bool test() {
   test_iterators();
 
   { // A custom comparator works.
-    const std::array input = {5, 4, 3, 2, 1};
-    std::array expected = {1, 2, 3, 5, 4};
+    const TestArray input = {5, 4, 3, 2, 1};
+    TestArray expected = {1, 2, 3, 5, 4};
     {
       auto in = input;
       auto last = std::ranges::make_heap(in.begin(), in.end(), std::ranges::greater{});
@@ -150,8 +150,8 @@ constexpr bool test() {
       constexpr auto operator<=>(const A&) const = default;
     };
 
-    const std::array input = {A{2}, A{1}, A{3}};
-    std::array expected = {A{3}, A{1}, A{2}};
+    const TestArray input = {A{2}, A{1}, A{3}};
+    TestArray expected = {A{3}, A{1}, A{2}};
     {
       auto in = input;
       auto last = std::ranges::make_heap(in.begin(), in.end(), {}, &A::a);
@@ -176,8 +176,8 @@ constexpr bool test() {
       constexpr auto operator<=>(const A&) const = default;
     };
 
-    const std::array input = {A{2}, A{1}, A{3}};
-    std::array expected = {A{3}, A{1}, A{2}};
+    const TestArray input = {A{2}, A{1}, A{3}};
+    TestArray expected = {A{3}, A{1}, A{2}};
     {
       auto in = input;
       auto last = std::ranges::make_heap(in.begin(), in.end(), &A::comparator, &A::projection);
@@ -192,8 +192,8 @@ constexpr bool test() {
   }
 
   { // The comparator can return any type that's convertible to `bool`.
-    const std::array input = {2, 1, 3};
-    std::array expected = {3, 1, 2};
+    const TestArray input = {2, 1, 3};
+    TestArray expected = {3, 1, 2};
     {
       auto in = input;
       auto last = std::ranges::make_heap(in.begin(), in.end(), [](int i, int j) { return BooleanTestable{i < j}; });
@@ -209,7 +209,7 @@ constexpr bool test() {
 
   { // `std::ranges::dangling` is returned.
     [[maybe_unused]] std::same_as<std::ranges::dangling> decltype(auto) result =
-        std::ranges::make_heap(std::array{1, 2, 3});
+        std::ranges::make_heap(TestArray{1, 2, 3});
   }
 
   return true;

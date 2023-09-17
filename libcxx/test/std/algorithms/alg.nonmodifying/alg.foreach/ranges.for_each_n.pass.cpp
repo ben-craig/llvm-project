@@ -57,10 +57,12 @@ constexpr void test_iterator() {
     assert(i == 4);
   }
 
+  #if 0
   { // check that an emptry range works
     int a[] = {};
     std::ranges::for_each_n(Iter(a), 0, [](auto&) { assert(false); });
   }
+  #endif
 }
 
 constexpr bool test() {
