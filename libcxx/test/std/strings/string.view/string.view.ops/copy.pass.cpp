@@ -26,7 +26,7 @@
 #include "test_macros.h"
 
 template<typename CharT>
-void test1 ( std::basic_string_view<CharT> sv, size_t n, size_t pos ) {
+consteval void test1 ( std::basic_string_view<CharT> sv, size_t n, size_t pos ) {
     const size_t rlen = std::min ( n, sv.size() - pos );
 
     CharT *dest1 = new CharT [rlen + 1];    dest1[rlen] = 0;
@@ -54,7 +54,7 @@ void test1 ( std::basic_string_view<CharT> sv, size_t n, size_t pos ) {
 
 
 template<typename CharT>
-void test ( const CharT *s ) {
+consteval void test ( const CharT *s ) {
     typedef std::basic_string_view<CharT> string_view_t;
 
     string_view_t sv1 ( s );
@@ -78,7 +78,7 @@ void test ( const CharT *s ) {
 }
 
 template<typename CharT>
-TEST_CONSTEXPR_CXX20 bool test_constexpr_copy(const CharT *abcde, const CharT *ghijk, const CharT *bcdjk)
+consteval bool test_constexpr_copy(const CharT *abcde, const CharT *ghijk, const CharT *bcdjk)
 {
     CharT buf[6] = {};
     std::basic_string_view<CharT> lval(ghijk); lval.copy(buf, 6);

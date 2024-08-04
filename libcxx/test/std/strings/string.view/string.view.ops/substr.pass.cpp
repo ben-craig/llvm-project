@@ -24,7 +24,7 @@
 #include "test_macros.h"
 
 template<typename CharT>
-void test1(std::basic_string_view<CharT> sv, size_t n, size_t pos) {
+consteval void test1(std::basic_string_view<CharT> sv, size_t n, size_t pos) {
     std::basic_string_view<CharT> sv1;
 #ifdef TEST_HAS_NO_EXCEPTIONS
     if (pos > sv.size())
@@ -48,7 +48,7 @@ void test1(std::basic_string_view<CharT> sv, size_t n, size_t pos) {
 
 
 template<typename CharT>
-void test ( const CharT *s ) {
+consteval void test ( const CharT *s ) {
     typedef std::basic_string_view<CharT> string_view_t;
 
     string_view_t sv1 ( s );
