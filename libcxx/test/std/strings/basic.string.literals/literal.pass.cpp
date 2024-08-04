@@ -19,7 +19,7 @@
     typedef std::string   u8string;
 #endif
 
-int main(int, char**) {
+consteval bool test() {
     {
         using namespace std::literals::string_literals;
 
@@ -74,5 +74,9 @@ int main(int, char**) {
         assert(foo == std::string());
     }
 
-    return 0;
+    return true;
 }
+
+static_assert(test());
+
+int main() {}

@@ -20,7 +20,7 @@
 #include "test_allocator.h"
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s, SV sv, S expected)
 {
     s.assign(sv);
@@ -29,7 +29,7 @@ test(S s, SV sv, S expected)
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 testAlloc(S s, SV sv, const typename S::allocator_type& a)
 {
     s.assign(sv);
@@ -39,7 +39,7 @@ testAlloc(S s, SV sv, const typename S::allocator_type& a)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test_string() {
+consteval void test_string() {
   typedef std::string_view SV;
   test(S(), SV(), S());
   test(S(), SV("12345"), S("12345"));
@@ -70,7 +70,7 @@ TEST_CONSTEXPR_CXX20 void test_string() {
   testAlloc(S(), SV("12345678901234567890"), A());
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   test_string<std::string>();
 #if TEST_STD_VER >= 11
   test_string<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
@@ -81,7 +81,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

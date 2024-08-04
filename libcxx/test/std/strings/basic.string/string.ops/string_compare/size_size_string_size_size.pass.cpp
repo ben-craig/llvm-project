@@ -20,7 +20,7 @@
 
 #include "test_macros.h"
 
-TEST_CONSTEXPR_CXX20 int sign(int x)
+consteval int sign(int x)
 {
     if (x == 0)
         return 0;
@@ -30,7 +30,7 @@ TEST_CONSTEXPR_CXX20 int sign(int x)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s,   typename S::size_type pos1, typename S::size_type n1,
      const S& str, typename S::size_type pos2, typename S::size_type n2, int x)
 {
@@ -53,7 +53,7 @@ test(const S& s,   typename S::size_type pos1, typename S::size_type n1,
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test_npos(const S& s,   typename S::size_type pos1, typename S::size_type n1,
           const S& str, typename S::size_type pos2, int x)
 {
@@ -76,7 +76,7 @@ test_npos(const S& s,   typename S::size_type pos1, typename S::size_type n1,
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test0()
+consteval bool test0()
 {
     test(S(""), 0, 0, S(""), 0, 0, 0);
     test(S(""), 0, 0, S(""), 0, 1, 0);
@@ -183,7 +183,7 @@ TEST_CONSTEXPR_CXX20 bool test0()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test1()
+consteval bool test1()
 {
     test(S(""), 0, 1, S("abcdefghij"), 0, 0, 0);
     test(S(""), 0, 1, S("abcdefghij"), 0, 1, -1);
@@ -290,7 +290,7 @@ TEST_CONSTEXPR_CXX20 bool test1()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test2()
+consteval bool test2()
 {
     test(S(""), 1, 0, S("abcdefghijklmnopqrst"), 0, 10, 0);
     test(S(""), 1, 0, S("abcdefghijklmnopqrst"), 0, 19, 0);
@@ -397,7 +397,7 @@ TEST_CONSTEXPR_CXX20 bool test2()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test3()
+consteval bool test3()
 {
     test(S("abcde"), 0, 1, S("abcde"), 0, 1, 0);
     test(S("abcde"), 0, 1, S("abcde"), 0, 2, -1);
@@ -504,7 +504,7 @@ TEST_CONSTEXPR_CXX20 bool test3()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test4()
+consteval bool test4()
 {
     test(S("abcde"), 0, 2, S("abcdefghij"), 0, 10, -8);
     test(S("abcde"), 0, 2, S("abcdefghij"), 0, 11, -8);
@@ -611,7 +611,7 @@ TEST_CONSTEXPR_CXX20 bool test4()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test5()
+consteval bool test5()
 {
     test(S("abcde"), 0, 4, S("abcdefghijklmnopqrst"), 1, 0, 4);
     test(S("abcde"), 0, 4, S("abcdefghijklmnopqrst"), 1, 1, -1);
@@ -718,7 +718,7 @@ TEST_CONSTEXPR_CXX20 bool test5()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test6()
+consteval bool test6()
 {
     test(S("abcde"), 0, 6, S("abcde"), 0, 6, 0);
     test(S("abcde"), 0, 6, S("abcde"), 1, 0, 5);
@@ -825,7 +825,7 @@ TEST_CONSTEXPR_CXX20 bool test6()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test7()
+consteval bool test7()
 {
     test(S("abcde"), 1, 0, S("abcdefghij"), 1, 4, -4);
     test(S("abcde"), 1, 0, S("abcdefghij"), 1, 8, -8);
@@ -932,7 +932,7 @@ TEST_CONSTEXPR_CXX20 bool test7()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test8()
+consteval bool test8()
 {
     test(S("abcde"), 1, 1, S("abcdefghijklmnopqrst"), 1, 19, -18);
     test(S("abcde"), 1, 1, S("abcdefghijklmnopqrst"), 1, 20, -18);
@@ -1039,7 +1039,7 @@ TEST_CONSTEXPR_CXX20 bool test8()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test9()
+consteval bool test9()
 {
     test(S("abcde"), 1, 3, S("abcde"), 1, 3, 0);
     test(S("abcde"), 1, 3, S("abcde"), 1, 4, -1);
@@ -1146,7 +1146,7 @@ TEST_CONSTEXPR_CXX20 bool test9()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test10()
+consteval bool test10()
 {
     test(S("abcde"), 1, 4, S("abcdefghij"), 5, 0, 4);
     test(S("abcde"), 1, 4, S("abcdefghij"), 5, 1, -4);
@@ -1253,7 +1253,7 @@ TEST_CONSTEXPR_CXX20 bool test10()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test11()
+consteval bool test11()
 {
     test(S("abcde"), 1, 5, S("abcdefghijklmnopqrst"), 10, 5, -9);
     test(S("abcde"), 1, 5, S("abcdefghijklmnopqrst"), 10, 9, -9);
@@ -1360,7 +1360,7 @@ TEST_CONSTEXPR_CXX20 bool test11()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test12()
+consteval bool test12()
 {
     test(S("abcde"), 2, 1, S("abcde"), 2, 1, 0);
     test(S("abcde"), 2, 1, S("abcde"), 2, 2, -1);
@@ -1467,7 +1467,7 @@ TEST_CONSTEXPR_CXX20 bool test12()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test13()
+consteval bool test13()
 {
     test(S("abcde"), 2, 2, S("abcdefghij"), 5, 5, -3);
     test(S("abcde"), 2, 2, S("abcdefghij"), 5, 6, -3);
@@ -1574,7 +1574,7 @@ TEST_CONSTEXPR_CXX20 bool test13()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test14()
+consteval bool test14()
 {
     test(S("abcde"), 2, 3, S("abcdefghijklmnopqrst"), 19, 0, 3);
     test(S("abcde"), 2, 3, S("abcdefghijklmnopqrst"), 19, 1, -17);
@@ -1681,7 +1681,7 @@ TEST_CONSTEXPR_CXX20 bool test14()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test15()
+consteval bool test15()
 {
     test(S("abcde"), 4, 0, S("abcde"), 4, 0, 0);
     test(S("abcde"), 4, 0, S("abcde"), 4, 1, -1);
@@ -1788,7 +1788,7 @@ TEST_CONSTEXPR_CXX20 bool test15()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test16()
+consteval bool test16()
 {
     test(S("abcde"), 4, 1, S("abcdefghij"), 9, 2, -5);
     test(S("abcde"), 4, 1, S("abcdefghij"), 10, 0, 1);
@@ -1895,7 +1895,7 @@ TEST_CONSTEXPR_CXX20 bool test16()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test17()
+consteval bool test17()
 {
     test(S("abcde"), 4, 2, S("abcdefghijklmnopqrst"), 20, 1, 1);
     test(S("abcde"), 4, 2, S("abcdefghijklmnopqrst"), 21, 0, 0);
@@ -2002,7 +2002,7 @@ TEST_CONSTEXPR_CXX20 bool test17()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test18()
+consteval bool test18()
 {
     test(S("abcde"), 5, 1, S("abcde"), 5, 1, 0);
     test(S("abcde"), 5, 1, S("abcde"), 6, 0, 0);
@@ -2109,7 +2109,7 @@ TEST_CONSTEXPR_CXX20 bool test18()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test19()
+consteval bool test19()
 {
     test(S("abcde"), 6, 0, S("abcdefghijklmnopqrst"), 0, 0, 0);
     test(S("abcde"), 6, 0, S("abcdefghijklmnopqrst"), 0, 1, 0);
@@ -2216,7 +2216,7 @@ TEST_CONSTEXPR_CXX20 bool test19()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test20()
+consteval bool test20()
 {
     test(S("abcdefghij"), 0, 1, S(""), 1, 0, 0);
     test(S("abcdefghij"), 0, 1, S("abcde"), 0, 0, 1);
@@ -2323,7 +2323,7 @@ TEST_CONSTEXPR_CXX20 bool test20()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test21()
+consteval bool test21()
 {
     test(S("abcdefghij"), 0, 5, S("abcdefghij"), 0, 5, 0);
     test(S("abcdefghij"), 0, 5, S("abcdefghij"), 0, 9, -4);
@@ -2430,7 +2430,7 @@ TEST_CONSTEXPR_CXX20 bool test21()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test22()
+consteval bool test22()
 {
     test(S("abcdefghij"), 0, 9, S("abcdefghijklmnopqrst"), 0, 20, -11);
     test(S("abcdefghij"), 0, 9, S("abcdefghijklmnopqrst"), 0, 21, -11);
@@ -2537,7 +2537,7 @@ TEST_CONSTEXPR_CXX20 bool test22()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test23()
+consteval bool test23()
 {
     test(S("abcdefghij"), 0, 11, S("abcde"), 0, 4, 6);
     test(S("abcdefghij"), 0, 11, S("abcde"), 0, 5, 5);
@@ -2644,7 +2644,7 @@ TEST_CONSTEXPR_CXX20 bool test23()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test24()
+consteval bool test24()
 {
     test(S("abcdefghij"), 1, 0, S("abcdefghij"), 1, 0, 0);
     test(S("abcdefghij"), 1, 0, S("abcdefghij"), 1, 1, -1);
@@ -2751,7 +2751,7 @@ TEST_CONSTEXPR_CXX20 bool test24()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test25()
+consteval bool test25()
 {
     test(S("abcdefghij"), 1, 1, S("abcdefghijklmnopqrst"), 1, 9, -8);
     test(S("abcdefghij"), 1, 1, S("abcdefghijklmnopqrst"), 1, 18, -17);
@@ -2858,7 +2858,7 @@ TEST_CONSTEXPR_CXX20 bool test25()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test26()
+consteval bool test26()
 {
     test(S("abcdefghij"), 1, 8, S("abcde"), 1, 1, 7);
     test(S("abcdefghij"), 1, 8, S("abcde"), 1, 2, 6);
@@ -2965,7 +2965,7 @@ TEST_CONSTEXPR_CXX20 bool test26()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test27()
+consteval bool test27()
 {
     test(S("abcdefghij"), 1, 9, S("abcdefghij"), 1, 9, 0);
     test(S("abcdefghij"), 1, 9, S("abcdefghij"), 1, 10, 0);
@@ -3072,7 +3072,7 @@ TEST_CONSTEXPR_CXX20 bool test27()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test28()
+consteval bool test28()
 {
     test(S("abcdefghij"), 1, 10, S("abcdefghijklmnopqrst"), 10, 0, 9);
     test(S("abcdefghij"), 1, 10, S("abcdefghijklmnopqrst"), 10, 1, -9);
@@ -3179,7 +3179,7 @@ TEST_CONSTEXPR_CXX20 bool test28()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test29()
+consteval bool test29()
 {
     test(S("abcdefghij"), 5, 1, S("abcde"), 1, 5, 4);
     test(S("abcdefghij"), 5, 1, S("abcde"), 2, 0, 1);
@@ -3286,7 +3286,7 @@ TEST_CONSTEXPR_CXX20 bool test29()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test30()
+consteval bool test30()
 {
     test(S("abcdefghij"), 5, 2, S("abcdefghij"), 5, 2, 0);
     test(S("abcdefghij"), 5, 2, S("abcdefghij"), 5, 4, -2);
@@ -3393,7 +3393,7 @@ TEST_CONSTEXPR_CXX20 bool test30()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test31()
+consteval bool test31()
 {
     test(S("abcdefghij"), 5, 4, S("abcdefghijklmnopqrst"), 10, 10, -5);
     test(S("abcdefghij"), 5, 4, S("abcdefghijklmnopqrst"), 10, 11, -5);
@@ -3500,7 +3500,7 @@ TEST_CONSTEXPR_CXX20 bool test31()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test32()
+consteval bool test32()
 {
     test(S("abcdefghij"), 5, 6, S("abcde"), 2, 3, 3);
     test(S("abcdefghij"), 5, 6, S("abcde"), 2, 4, 3);
@@ -3607,7 +3607,7 @@ TEST_CONSTEXPR_CXX20 bool test32()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test33()
+consteval bool test33()
 {
     test(S("abcdefghij"), 9, 0, S("abcdefghij"), 9, 0, 0);
     test(S("abcdefghij"), 9, 0, S("abcdefghij"), 9, 1, -1);
@@ -3714,7 +3714,7 @@ TEST_CONSTEXPR_CXX20 bool test33()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test34()
+consteval bool test34()
 {
     test(S("abcdefghij"), 9, 1, S("abcdefghijklmnopqrst"), 19, 2, -10);
     test(S("abcdefghij"), 9, 1, S("abcdefghijklmnopqrst"), 20, 0, 1);
@@ -3821,7 +3821,7 @@ TEST_CONSTEXPR_CXX20 bool test34()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test35()
+consteval bool test35()
 {
     test(S("abcdefghij"), 10, 0, S("abcde"), 4, 2, -1);
     test(S("abcdefghij"), 10, 0, S("abcde"), 5, 0, 0);
@@ -3928,7 +3928,7 @@ TEST_CONSTEXPR_CXX20 bool test35()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test36()
+consteval bool test36()
 {
     test(S("abcdefghij"), 10, 1, S("abcdefghij"), 10, 1, 0);
     test(S("abcdefghij"), 10, 1, S("abcdefghij"), 11, 0, 0);
@@ -4035,7 +4035,7 @@ TEST_CONSTEXPR_CXX20 bool test36()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test37()
+consteval bool test37()
 {
     test(S("abcdefghijklmnopqrst"), 0, 0, S(""), 0, 0, 0);
     test(S("abcdefghijklmnopqrst"), 0, 0, S(""), 0, 1, 0);
@@ -4142,7 +4142,7 @@ TEST_CONSTEXPR_CXX20 bool test37()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test38()
+consteval bool test38()
 {
     test(S("abcdefghijklmnopqrst"), 0, 1, S("abcdefghij"), 0, 0, 1);
     test(S("abcdefghijklmnopqrst"), 0, 1, S("abcdefghij"), 0, 1, 0);
@@ -4249,7 +4249,7 @@ TEST_CONSTEXPR_CXX20 bool test38()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test39()
+consteval bool test39()
 {
     test(S("abcdefghijklmnopqrst"), 0, 10, S("abcdefghijklmnopqrst"), 0, 10, 0);
     test(S("abcdefghijklmnopqrst"), 0, 10, S("abcdefghijklmnopqrst"), 0, 19, -9);
@@ -4356,7 +4356,7 @@ TEST_CONSTEXPR_CXX20 bool test39()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test40()
+consteval bool test40()
 {
     test(S("abcdefghijklmnopqrst"), 0, 20, S("abcde"), 0, 1, 19);
     test(S("abcdefghijklmnopqrst"), 0, 20, S("abcde"), 0, 2, 18);
@@ -4463,7 +4463,7 @@ TEST_CONSTEXPR_CXX20 bool test40()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test41()
+consteval bool test41()
 {
     test(S("abcdefghijklmnopqrst"), 0, 21, S("abcdefghij"), 0, 10, 10);
     test(S("abcdefghijklmnopqrst"), 0, 21, S("abcdefghij"), 0, 11, 10);
@@ -4570,7 +4570,7 @@ TEST_CONSTEXPR_CXX20 bool test41()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test42()
+consteval bool test42()
 {
     test(S("abcdefghijklmnopqrst"), 1, 0, S("abcdefghijklmnopqrst"), 1, 0, 0);
     test(S("abcdefghijklmnopqrst"), 1, 0, S("abcdefghijklmnopqrst"), 1, 1, -1);
@@ -4677,7 +4677,7 @@ TEST_CONSTEXPR_CXX20 bool test42()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test43()
+consteval bool test43()
 {
     test(S("abcdefghijklmnopqrst"), 1, 9, S("abcde"), 0, 6, 1);
     test(S("abcdefghijklmnopqrst"), 1, 9, S("abcde"), 1, 0, 9);
@@ -4784,7 +4784,7 @@ TEST_CONSTEXPR_CXX20 bool test43()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test44()
+consteval bool test44()
 {
     test(S("abcdefghijklmnopqrst"), 1, 18, S("abcdefghij"), 1, 4, 14);
     test(S("abcdefghijklmnopqrst"), 1, 18, S("abcdefghij"), 1, 8, 10);
@@ -4891,7 +4891,7 @@ TEST_CONSTEXPR_CXX20 bool test44()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test45()
+consteval bool test45()
 {
     test(S("abcdefghijklmnopqrst"), 1, 19, S("abcdefghijklmnopqrst"), 1, 19, 0);
     test(S("abcdefghijklmnopqrst"), 1, 19, S("abcdefghijklmnopqrst"), 1, 20, 0);
@@ -4998,7 +4998,7 @@ TEST_CONSTEXPR_CXX20 bool test45()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test46()
+consteval bool test46()
 {
     test(S("abcdefghijklmnopqrst"), 10, 0, S("abcde"), 1, 3, -3);
     test(S("abcdefghijklmnopqrst"), 10, 0, S("abcde"), 1, 4, -4);
@@ -5105,7 +5105,7 @@ TEST_CONSTEXPR_CXX20 bool test46()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test47()
+consteval bool test47()
 {
     test(S("abcdefghijklmnopqrst"), 10, 1, S("abcdefghij"), 5, 0, 1);
     test(S("abcdefghijklmnopqrst"), 10, 1, S("abcdefghij"), 5, 1, 5);
@@ -5212,7 +5212,7 @@ TEST_CONSTEXPR_CXX20 bool test47()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test48()
+consteval bool test48()
 {
     test(S("abcdefghijklmnopqrst"), 10, 5, S("abcdefghijklmnopqrst"), 10, 5, 0);
     test(S("abcdefghijklmnopqrst"), 10, 5, S("abcdefghijklmnopqrst"), 10, 9, -4);
@@ -5319,7 +5319,7 @@ TEST_CONSTEXPR_CXX20 bool test48()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test49()
+consteval bool test49()
 {
     test(S("abcdefghijklmnopqrst"), 10, 10, S("abcde"), 2, 1, 8);
     test(S("abcdefghijklmnopqrst"), 10, 10, S("abcde"), 2, 2, 8);
@@ -5426,7 +5426,7 @@ TEST_CONSTEXPR_CXX20 bool test49()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test50()
+consteval bool test50()
 {
     test(S("abcdefghijklmnopqrst"), 10, 11, S("abcdefghij"), 5, 5, 5);
     test(S("abcdefghijklmnopqrst"), 10, 11, S("abcdefghij"), 5, 6, 5);
@@ -5533,7 +5533,7 @@ TEST_CONSTEXPR_CXX20 bool test50()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test51()
+consteval bool test51()
 {
     test(S("abcdefghijklmnopqrst"), 19, 0, S("abcdefghijklmnopqrst"), 19, 0, 0);
     test(S("abcdefghijklmnopqrst"), 19, 0, S("abcdefghijklmnopqrst"), 19, 1, -1);
@@ -5640,7 +5640,7 @@ TEST_CONSTEXPR_CXX20 bool test51()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test52()
+consteval bool test52()
 {
     test(S("abcdefghijklmnopqrst"), 19, 2, S("abcde"), 4, 0, 1);
     test(S("abcdefghijklmnopqrst"), 19, 2, S("abcde"), 4, 1, 15);
@@ -5747,7 +5747,7 @@ TEST_CONSTEXPR_CXX20 bool test52()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test53()
+consteval bool test53()
 {
     test(S("abcdefghijklmnopqrst"), 20, 0, S("abcdefghij"), 9, 2, -1);
     test(S("abcdefghijklmnopqrst"), 20, 0, S("abcdefghij"), 10, 0, 0);
@@ -5854,7 +5854,7 @@ TEST_CONSTEXPR_CXX20 bool test53()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test54()
+consteval bool test54()
 {
     test(S("abcdefghijklmnopqrst"), 20, 1, S("abcdefghijklmnopqrst"), 20, 1, 0);
     test(S("abcdefghijklmnopqrst"), 20, 1, S("abcdefghijklmnopqrst"), 21, 0, 0);
@@ -5937,7 +5937,7 @@ TEST_CONSTEXPR_CXX20 bool test54()
 }
 
 template<class S>
-TEST_CONSTEXPR_CXX20 bool test55()
+consteval bool test55()
 {
     test_npos(S(""), 0, 0, S(""), 0, 0);
     test_npos(S(""), 0, 0, S("abcde"), 0, -5);

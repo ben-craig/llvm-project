@@ -24,18 +24,18 @@
 #include "min_allocator.h"
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test0(const S& lhs, typename S::value_type rhs, const S& x) {
+consteval void test0(const S& lhs, typename S::value_type rhs, const S& x) {
   assert(lhs + rhs == x);
 }
 
 #if TEST_STD_VER >= 11
 template <class S>
-TEST_CONSTEXPR_CXX20 void test1(S&& lhs, typename S::value_type rhs, const S& x) {
+consteval void test1(S&& lhs, typename S::value_type rhs, const S& x) {
   assert(std::move(lhs) + rhs == x);
 }
 #endif
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef std::string S;
     test0(S(""), '1', S("1"));
@@ -71,7 +71,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 }
 
 int main(int, char**) {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

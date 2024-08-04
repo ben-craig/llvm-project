@@ -16,7 +16,7 @@
 
 #include "test_macros.h"
 
-constexpr bool test()
+consteval bool test()
 {
     using S = std::string;
 
@@ -67,7 +67,7 @@ constexpr bool test()
 
 int main(int, char**)
 {
-  test();
+  //test();
   static_assert(test());
 
   return 0;

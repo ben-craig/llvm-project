@@ -22,7 +22,7 @@
 #include "min_allocator.h"
 
 template <class S, class U>
-void test0(S s, U val, S expected, size_t expected_erased_count) {
+consteval void test0(S s, U val, S expected, size_t expected_erased_count) {
   ASSERT_SAME_TYPE(typename S::size_type, decltype(std::erase(s, val)));
   assert(expected_erased_count == std::erase(s, val));
   LIBCPP_ASSERT(s.__invariants());
@@ -30,7 +30,7 @@ void test0(S s, U val, S expected, size_t expected_erased_count) {
 }
 
 template <class S>
-void test()
+consteval void test()
 {
 
   test0(S(""), 'a', S(""), 0);
@@ -66,11 +66,17 @@ void test()
   test0(S("aba"), opt('c'), S("aba"), 0);
 }
 
-int main(int, char**)
+consteval bool test_top()
 {
     test<std::string>();
     test<std::basic_string<char, std::char_traits<char>, min_allocator<char>>> ();
     test<std::basic_string<char, std::char_traits<char>, test_allocator<char>>> ();
+    return true;
+}
 
-  return 0;
+static_assert(test_top());
+
+int main(int, char**)
+{
+    return 0;
 }

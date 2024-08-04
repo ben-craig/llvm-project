@@ -18,7 +18,7 @@
 #include "test_macros.h"
 #include "min_allocator.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     std::string s("123def456");
     s.replace(s.cbegin() + 3, s.cbegin() + 6, {'a', 'b', 'c'});
@@ -36,7 +36,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

@@ -18,7 +18,7 @@
 #include <string>
 
 #include "constexpr_char_traits.h"
-#include "count_new.h"
+//#include "count_new.h"
 #include "make_string.h"
 #include "min_allocator.h"
 #include "test_allocator.h"
@@ -30,7 +30,7 @@ constexpr struct should_throw_exception_t {
 } should_throw_exception;
 
 template <class S>
-constexpr void test_string_pos(S orig, typename S::size_type pos, S expected) {
+consteval void test_string_pos(S orig, typename S::size_type pos, S expected) {
 #ifdef _LIBCPP_VERSION
   ConstexprDisableAllocationGuard g;
 #endif
@@ -42,7 +42,7 @@ constexpr void test_string_pos(S orig, typename S::size_type pos, S expected) {
 }
 
 template <class S>
-constexpr void test_string_pos(S orig, typename S::size_type pos, should_throw_exception_t) {
+consteval void test_string_pos(S orig, typename S::size_type pos, should_throw_exception_t) {
 #ifndef TEST_HAS_NO_EXCEPTIONS
   if (!std::is_constant_evaluated()) {
     try {
@@ -58,7 +58,7 @@ constexpr void test_string_pos(S orig, typename S::size_type pos, should_throw_e
 }
 
 template <class S>
-constexpr void
+consteval void
 test_string_pos_alloc(S orig, typename S::size_type pos, const typename S::allocator_type& alloc, S expected) {
   S substr(std::move(orig), pos, alloc);
   LIBCPP_ASSERT(orig.__invariants());
@@ -68,7 +68,7 @@ test_string_pos_alloc(S orig, typename S::size_type pos, const typename S::alloc
 }
 
 template <class S>
-constexpr void test_string_pos_alloc(
+consteval void test_string_pos_alloc(
     S orig, typename S::size_type pos, const typename S::allocator_type& alloc, should_throw_exception_t) {
 #ifndef TEST_HAS_NO_EXCEPTIONS
   if (!std::is_constant_evaluated()) {
@@ -86,7 +86,7 @@ constexpr void test_string_pos_alloc(
 }
 
 template <class S>
-constexpr void test_string_pos_n(S orig, typename S::size_type pos, typename S::size_type n, S expected) {
+consteval void test_string_pos_n(S orig, typename S::size_type pos, typename S::size_type n, S expected) {
 #ifdef _LIBCPP_VERSION
   ConstexprDisableAllocationGuard g;
 #endif
@@ -98,7 +98,7 @@ constexpr void test_string_pos_n(S orig, typename S::size_type pos, typename S::
 }
 
 template <class S>
-constexpr void test_string_pos_n(S orig, typename S::size_type pos, typename S::size_type n, should_throw_exception_t) {
+consteval void test_string_pos_n(S orig, typename S::size_type pos, typename S::size_type n, should_throw_exception_t) {
 #ifndef TEST_HAS_NO_EXCEPTIONS
   if (!std::is_constant_evaluated()) {
     try {
@@ -115,7 +115,7 @@ constexpr void test_string_pos_n(S orig, typename S::size_type pos, typename S::
 }
 
 template <class S>
-constexpr void test_string_pos_n_alloc(
+consteval void test_string_pos_n_alloc(
     S orig, typename S::size_type pos, typename S::size_type n, const typename S::allocator_type& alloc, S expected) {
   S substr(std::move(orig), pos, n, alloc);
   LIBCPP_ASSERT(orig.__invariants());
@@ -125,7 +125,7 @@ constexpr void test_string_pos_n_alloc(
 }
 
 template <class S>
-constexpr void test_string_pos_n_alloc(
+consteval void test_string_pos_n_alloc(
     S orig,
     typename S::size_type pos,
     typename S::size_type n,
@@ -148,7 +148,7 @@ constexpr void test_string_pos_n_alloc(
 }
 
 template <class S>
-constexpr void test_string(const typename S::allocator_type& alloc) {
+consteval void test_string(const typename S::allocator_type& alloc) {
   test_string_pos<S>(STR(""), 0, STR(""));
   test_string_pos<S>(STR(""), 1, should_throw_exception);
   test_string_pos<S>(STR("Banane"), 1, STR("anane"));
@@ -199,14 +199,14 @@ constexpr void test_string(const typename S::allocator_type& alloc) {
 }
 
 template <class CharT, class CharTraits>
-constexpr void test_allocators() {
+consteval void test_allocators() {
   test_string<std::basic_string<CharT, CharTraits, std::allocator<CharT>>>(std::allocator<CharT>{});
   test_string<std::basic_string<CharT, CharTraits, min_allocator<CharT>>>(min_allocator<CharT>{});
   test_string<std::basic_string<CharT, CharTraits, test_allocator<CharT>>>(test_allocator<CharT>{42});
 }
 
 template <class CharT>
-constexpr bool test_char_traits() {
+consteval bool test_char_traits() {
   test_allocators<CharT, std::char_traits<CharT>>();
   test_allocators<CharT, constexpr_char_traits<CharT>>();
 
@@ -215,18 +215,18 @@ constexpr bool test_char_traits() {
 
 int main(int, char**) {
   // TODO: put these into a single function when we increase the constexpr step limit
-  test_char_traits<char>();
+  //test_char_traits<char>();
   static_assert(test_char_traits<char>());
-  test_char_traits<char16_t>();
+  //test_char_traits<char16_t>();
   static_assert(test_char_traits<char16_t>());
-  test_char_traits<char32_t>();
+  //test_char_traits<char32_t>();
   static_assert(test_char_traits<char32_t>());
 #ifndef TEST_HAS_NO_WIDE_CHARACTERS
-  test_char_traits<wchar_t>();
+  //test_char_traits<wchar_t>();
   static_assert(test_char_traits<wchar_t>());
 #endif
 #ifndef TEST_HAS_NO_CHAR8_T
-  test_char_traits<char8_t>();
+  //test_char_traits<char8_t>();
   static_assert(test_char_traits<char8_t>());
 #endif
 

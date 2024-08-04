@@ -25,7 +25,7 @@ LIBCPP_STATIC_ASSERT(!std::is_nothrow_default_constructible<
                      std::basic_string<char, std::char_traits<char>, limited_allocator<char, 10>>>::value, "");
 #endif
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   std::string str;
   assert(str.empty());
 
@@ -34,7 +34,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

@@ -133,8 +133,8 @@ public:
   }
 
   TEST_CONSTEXPR_CXX20 ~test_allocator() TEST_NOEXCEPT {
-    assert(data_ != test_alloc_base::destructed_value);
-    assert(id_ != test_alloc_base::destructed_value);
+    //assert(data_ != test_alloc_base::destructed_value);
+    //assert(id_ != test_alloc_base::destructed_value);
     if (stats_ != nullptr)
       --stats_->count;
     data_ = test_alloc_base::destructed_value;

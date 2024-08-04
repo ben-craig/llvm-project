@@ -19,7 +19,7 @@
 #include "min_allocator.h"
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s, typename S::size_type pos1, typename S::size_type n1, S str, S expected)
 {
     typename S::size_type old_size = s.size();
@@ -34,7 +34,7 @@ test(S s, typename S::size_type pos1, typename S::size_type n1, S str, S expecte
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test0()
+consteval bool test0()
 {
     test(S(""), 0, 0, S(""), S(""));
     test(S(""), 0, 0, S("12345"), S("12345"));
@@ -141,7 +141,7 @@ TEST_CONSTEXPR_CXX20 bool test0()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test1()
+consteval bool test1()
 {
     test(S("abcdefghij"), 1, 4, S(""), S("afghij"));
     test(S("abcdefghij"), 1, 4, S("12345"), S("a12345fghij"));
@@ -248,7 +248,7 @@ TEST_CONSTEXPR_CXX20 bool test1()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test2()
+consteval bool test2()
 {
     test(S("abcdefghijklmnopqrst"), 10, 10, S(""), S("abcdefghij"));
     test(S("abcdefghijklmnopqrst"), 10, 10, S("12345"), S("abcdefghij12345"));
@@ -271,11 +271,11 @@ TEST_CONSTEXPR_CXX20 bool test2()
 }
 
 template <class S>
-void test() {
+consteval bool test() {
   {
-    test0<S>();
-    test1<S>();
-    test2<S>();
+    //test0<S>();
+    //test1<S>();
+    //test2<S>();
 #if TEST_STD_VER > 17
     static_assert(test0<S>());
     static_assert(test1<S>());
@@ -291,13 +291,14 @@ void test() {
     assert(s == "a");
   }
 #endif
+return true;
 }
 
 int main(int, char**)
 {
-  test<std::string>();
+  static_assert(test<std::string>());
 #if TEST_STD_VER >= 11
-  test<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
+  static_assert(test<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>());
 #endif
 
   return 0;

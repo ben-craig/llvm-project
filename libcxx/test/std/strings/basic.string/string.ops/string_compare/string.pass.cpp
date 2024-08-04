@@ -16,7 +16,7 @@
 #include "test_macros.h"
 #include "min_allocator.h"
 
-TEST_CONSTEXPR_CXX20 int sign(int x)
+consteval int sign(int x)
 {
     if (x == 0)
         return 0;
@@ -26,14 +26,14 @@ TEST_CONSTEXPR_CXX20 int sign(int x)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, const S& str, int x)
 {
     LIBCPP_ASSERT_NOEXCEPT(s.compare(str));
     assert(sign(s.compare(str)) == sign(x));
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef std::string S;
     test(S(""), S(""), 0);
@@ -87,7 +87,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

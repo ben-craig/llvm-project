@@ -18,13 +18,13 @@
 #include "min_allocator.h"
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, const typename S::allocator_type& a)
 {
     assert(s.get_allocator() == a);
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef test_allocator<char> A;
     typedef std::basic_string<char, std::char_traits<char>, A> S;
@@ -49,7 +49,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

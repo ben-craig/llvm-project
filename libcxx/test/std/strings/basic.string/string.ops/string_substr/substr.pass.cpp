@@ -21,7 +21,7 @@
 #include "min_allocator.h"
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, typename S::size_type pos, typename S::size_type n)
 {
     if (pos <= s.size())
@@ -50,7 +50,7 @@ test(const S& s, typename S::size_type pos, typename S::size_type n)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test_string() {
+consteval void test_string() {
   test(S(""), 0, 0);
   test(S(""), 1, 0);
   test(S("pniot"), 0, 0);
@@ -111,7 +111,7 @@ TEST_CONSTEXPR_CXX20 void test_string() {
   test(S("dplqartnfgejichmoskb"), 21, 0);
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   test_string<std::string>();
 #if TEST_STD_VER >= 11
   test_string<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
@@ -120,7 +120,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
   return true;
 }
 
-TEST_CONSTEXPR_CXX20 bool test_alloc() {
+consteval bool test_alloc() {
   {
     using alloc  = test_allocator<char>;
     using string = std::basic_string<char, std::char_traits<char>, alloc>;
@@ -146,8 +146,8 @@ TEST_CONSTEXPR_CXX20 bool test_alloc() {
 
 int main(int, char**)
 {
-  test();
-  test_alloc();
+  //test();
+  //test_alloc();
 #if TEST_STD_VER > 17
   static_assert(test());
   static_assert(test_alloc());

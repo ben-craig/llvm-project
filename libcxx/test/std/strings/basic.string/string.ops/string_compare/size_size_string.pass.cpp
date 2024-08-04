@@ -17,7 +17,7 @@
 #include "test_macros.h"
 #include "min_allocator.h"
 
-TEST_CONSTEXPR_CXX20 int sign(int x)
+consteval int sign(int x)
 {
     if (x == 0)
         return 0;
@@ -27,7 +27,7 @@ TEST_CONSTEXPR_CXX20 int sign(int x)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, typename S::size_type pos1, typename S::size_type n1,
      const S& str, int x)
 {
@@ -50,7 +50,7 @@ test(const S& s, typename S::size_type pos1, typename S::size_type n1,
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test0()
+consteval void test0()
 {
     test(S(""), 0, 0, S(""), 0);
     test(S(""), 0, 0, S("abcde"), -5);
@@ -155,7 +155,7 @@ TEST_CONSTEXPR_CXX20 void test0()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test1()
+consteval void test1()
 {
     test(S("abcde"), 6, 0, S(""), 0);
     test(S("abcde"), 6, 0, S("abcde"), 0);
@@ -260,7 +260,7 @@ TEST_CONSTEXPR_CXX20 void test1()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test2()
+consteval void test2()
 {
     test(S("abcdefghijklmnopqrst"), 0, 0, S(""), 0);
     test(S("abcdefghijklmnopqrst"), 0, 0, S("abcde"), -5);
@@ -360,7 +360,7 @@ TEST_CONSTEXPR_CXX20 void test2()
     test(S("abcdefghijklmnopqrst"), 21, 0, S("abcdefghijklmnopqrst"), 0);
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef std::string S;
     test0<S>();
@@ -388,7 +388,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

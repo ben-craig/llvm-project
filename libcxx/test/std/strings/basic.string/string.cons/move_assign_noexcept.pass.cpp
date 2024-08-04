@@ -62,7 +62,7 @@ struct some_alloc3
     typedef std::false_type is_always_equal;
 };
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef std::string C;
     static_assert(std::is_nothrow_move_assignable<C>::value, "");
@@ -98,7 +98,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

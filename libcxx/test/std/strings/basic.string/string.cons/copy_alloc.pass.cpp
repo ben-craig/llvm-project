@@ -67,7 +67,7 @@ bool operator!=(const poca_alloc<T>& lhs, const poca_alloc<U>& rhs)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test_assign(S &s1, const S& s2)
+consteval void test_assign(S &s1, const S& s2)
 {
     try { s1 = s2; }
     catch ( std::bad_alloc &) { return; }
@@ -78,7 +78,7 @@ TEST_CONSTEXPR_CXX20 void test_assign(S &s1, const S& s2)
 
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s1, const typename S::allocator_type& a)
 {
     S s2(s1, a);
@@ -88,7 +88,7 @@ test(S s1, const typename S::allocator_type& a)
     assert(s2.get_allocator() == a);
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef test_allocator<char> A;
     typedef std::basic_string<char, std::char_traits<char>, A> S;
@@ -133,7 +133,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

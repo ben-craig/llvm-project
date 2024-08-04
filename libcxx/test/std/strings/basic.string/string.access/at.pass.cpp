@@ -22,7 +22,7 @@
 #include "type_algorithms.h"
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s, typename S::size_type pos)
 {
     const S& cs = s;
@@ -57,7 +57,7 @@ test(S s, typename S::size_type pos)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test_string() {
+consteval void test_string() {
   test(S(), 0);
   test(S(MAKE_CSTRING(typename S::value_type, "123")), 0);
   test(S(MAKE_CSTRING(typename S::value_type, "123")), 1);
@@ -67,7 +67,7 @@ TEST_CONSTEXPR_CXX20 void test_string() {
 
 struct TestCaller {
   template <class T>
-  TEST_CONSTEXPR_CXX20 void operator()() {
+  consteval void operator()() {
         test_string<std::basic_string<T> >();
 #if TEST_STD_VER >= 11
         test_string<std::basic_string<T, std::char_traits<T>, min_allocator<T> > >();
@@ -75,7 +75,7 @@ struct TestCaller {
   }
 };
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   meta::for_each(meta::character_types(), TestCaller());
 
   return true;
@@ -83,7 +83,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

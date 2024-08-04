@@ -21,7 +21,7 @@
 #include "min_allocator.h"
 
 template <class charT>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(unsigned n, charT c)
 {
     typedef std::basic_string<charT, std::char_traits<charT>, test_allocator<charT> > S;
@@ -36,7 +36,7 @@ test(unsigned n, charT c)
 }
 
 template <class charT, class A>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(unsigned n, charT c, const A& a)
 {
     typedef std::basic_string<charT, std::char_traits<charT>, A> S;
@@ -50,7 +50,7 @@ test(unsigned n, charT c, const A& a)
 }
 
 template <class Tp>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(Tp n, Tp c)
 {
     typedef char charT;
@@ -66,7 +66,7 @@ test(Tp n, Tp c)
 }
 
 template <class Tp, class A>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(Tp n, Tp c, const A& a)
 {
     typedef char charT;
@@ -80,7 +80,7 @@ test(Tp n, Tp c, const A& a)
     assert(s2.capacity() >= s2.size());
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef test_allocator<char> A;
 
@@ -125,7 +125,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

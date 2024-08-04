@@ -17,7 +17,7 @@
 #include "min_allocator.h"
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, SV sv, typename S::size_type pos, typename S::size_type x)
 {
     LIBCPP_ASSERT_NOEXCEPT(s.find_first_of(sv, pos));
@@ -27,7 +27,7 @@ test(const S& s, SV sv, typename S::size_type pos, typename S::size_type x)
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, SV sv, typename S::size_type x)
 {
     LIBCPP_ASSERT_NOEXCEPT(s.find_first_of(sv));
@@ -37,7 +37,7 @@ test(const S& s, SV sv, typename S::size_type x)
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void test0()
+consteval void test0()
 {
     test(S(""), SV(""), 0, S::npos);
     test(S(""), SV("laenf"), 0, S::npos);
@@ -122,7 +122,7 @@ TEST_CONSTEXPR_CXX20 void test0()
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void test1()
+consteval void test1()
 {
     test(S(""), SV(""), S::npos);
     test(S(""), SV("laenf"), S::npos);
@@ -142,7 +142,7 @@ TEST_CONSTEXPR_CXX20 void test1()
     test(S("pniotcfrhqsmgdkjbael"), SV("htaobedqikfplcgjsmrn"), 0);
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef std::string S;
     typedef std::string_view SV;
@@ -163,7 +163,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

@@ -19,7 +19,7 @@
 #include "min_allocator.h"
 
 template <class S, class It>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s, It first, It last, S expected)
 {
     s.assign(first, last);
@@ -53,7 +53,7 @@ test_exceptions(S s, It first, It last)
 #endif
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test_string() {
+consteval void test_string() {
   const char* s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   test(S(), s, s, S());
   test(S(), s, s+1, S("A"));
@@ -111,7 +111,7 @@ TEST_CONSTEXPR_CXX20 void test_string() {
       S("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"));
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   test_string<std::string>();
 #if TEST_STD_VER >= 11
   test_string<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
@@ -173,7 +173,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

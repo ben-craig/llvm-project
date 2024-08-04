@@ -19,7 +19,7 @@
 #include "min_allocator.h"
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s, typename S::size_type pos1, typename S::size_type n1, SV sv, S expected)
 {
     typename S::size_type old_size = s.size();
@@ -34,7 +34,7 @@ test(S s, typename S::size_type pos1, typename S::size_type n1, SV sv, S expecte
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 bool test0()
+consteval bool test0()
 {
     test(S(""), 0, 0, SV(""), S(""));
     test(S(""), 0, 0, SV("12345"), S("12345"));
@@ -141,7 +141,7 @@ TEST_CONSTEXPR_CXX20 bool test0()
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 bool test1()
+consteval bool test1()
 {
     test(S("abcdefghij"), 1, 4, SV(""), S("afghij"));
     test(S("abcdefghij"), 1, 4, SV("12345"), S("a12345fghij"));
@@ -248,7 +248,7 @@ TEST_CONSTEXPR_CXX20 bool test1()
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 bool test2()
+consteval bool test2()
 {
     test(S("abcdefghijklmnopqrst"), 10, 10, SV(""), S("abcdefghij"));
     test(S("abcdefghijklmnopqrst"), 10, 10, SV("12345"), S("abcdefghij12345"));
@@ -270,7 +270,7 @@ TEST_CONSTEXPR_CXX20 bool test2()
     return true;
 }
 
-TEST_CONSTEXPR_CXX20 void test() {
+consteval bool test() {
   {
     typedef std::string S;
     typedef std::string_view SV;
@@ -297,11 +297,12 @@ TEST_CONSTEXPR_CXX20 void test() {
 #endif
   }
 #endif
+return true;
 }
 
 int main(int, char**)
 {
-  test();
+  static_assert(test());
 
   return 0;
 }

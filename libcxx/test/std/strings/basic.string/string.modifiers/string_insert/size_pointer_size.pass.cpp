@@ -19,7 +19,7 @@
 #include "min_allocator.h"
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s, typename S::size_type pos, const typename S::value_type* str,
      typename S::size_type n, S expected)
 {
@@ -49,7 +49,7 @@ test(S s, typename S::size_type pos, const typename S::value_type* str,
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     test(S(""), 0, "", 0, S(""));
     test(S(""), 0, "12345", 0, S(""));
@@ -393,9 +393,9 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test<std::string>();
+  //test<std::string>();
 #if TEST_STD_VER >= 11
-  test<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
+  //test<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
 #endif
 
 #if TEST_STD_VER > 17

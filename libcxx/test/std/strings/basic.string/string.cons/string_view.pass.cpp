@@ -25,7 +25,7 @@ static_assert(!std::is_convertible<std::string_view, std::string const&>::value,
 static_assert(!std::is_convertible<std::string_view, std::string>::value, "");
 
 template <class charT>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(std::basic_string_view<charT> sv)
 {
     typedef std::basic_string<charT, std::char_traits<charT>, test_allocator<charT> > S;
@@ -51,7 +51,7 @@ test(std::basic_string_view<charT> sv)
 }
 
 template <class charT, class A>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(std::basic_string_view<charT> sv, const A& a)
 {
     typedef std::basic_string<charT, std::char_traits<charT>, A> S;
@@ -75,7 +75,7 @@ test(std::basic_string_view<charT> sv, const A& a)
   }
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef test_allocator<char> A;
     typedef std::basic_string_view<char, std::char_traits<char> > SV;
@@ -116,7 +116,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

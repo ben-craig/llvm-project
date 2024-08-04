@@ -19,7 +19,7 @@
 #include <type_traits>
 
 #include "test_macros.h"
-
+#if 0 // freestanding
 template <class T>
 class bare_allocator
 {
@@ -192,6 +192,7 @@ struct cpp03_overload_allocator : bare_allocator<T>
     }
 };
 template <class T> bool cpp03_overload_allocator<T>::construct_called = false;
+#endif // freestanding
 
 template <class T, class = std::integral_constant<size_t, 0> > class min_pointer;
 template <class T, class ID> class min_pointer<const T, ID>;

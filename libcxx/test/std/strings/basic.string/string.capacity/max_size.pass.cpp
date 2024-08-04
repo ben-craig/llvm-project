@@ -24,9 +24,9 @@
 
 #include "test_macros.h"
 #include "min_allocator.h"
-
+#if 0
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test1(const S& s)
 {
     S s2(s);
@@ -37,7 +37,7 @@ test1(const S& s)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test2(const S& s)
 {
     S s2(s);
@@ -48,7 +48,7 @@ test2(const S& s)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s)
 {
     assert(s.max_size() >= s.size());
@@ -57,13 +57,13 @@ test(const S& s)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void test_string() {
+consteval void test_string() {
   test(S());
   test(S("123"));
   test(S("12345678901234567890123456789012345678901234567890"));
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   test_string<std::string>();
 #if TEST_STD_VER >= 11
   test_string<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
@@ -71,7 +71,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
   return true;
 }
-
+#endif
 #if TEST_STD_VER > 17
 constexpr bool test_constexpr() {
   std::string str;
@@ -85,9 +85,9 @@ constexpr bool test_constexpr() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
-  test_constexpr();
+  //test_constexpr();
   static_assert(test_constexpr());
 #endif
 

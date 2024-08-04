@@ -52,7 +52,7 @@ static_assert( CanDeduce<wchar_t*, std::allocator<wchar_t>>::value);
 static_assert(!CanDeduce<wchar_t const*, NotAnAllocator<wchar_t>>::value);
 #endif
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     const char* s = "12345678901234";
     std::basic_string s1(s, s+10);  // Can't use {} here
@@ -111,7 +111,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

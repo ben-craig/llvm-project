@@ -27,7 +27,7 @@ constexpr struct should_throw_exception_t {
 } should_throw_exception;
 
 template <class S>
-constexpr void test(S orig, typename S::size_type pos, typename S::size_type n, const S expected) {
+consteval void test(S orig, typename S::size_type pos, typename S::size_type n, const S expected) {
   S str = std::move(orig).substr(pos, n);
   LIBCPP_ASSERT(orig.__invariants());
   LIBCPP_ASSERT(str.__invariants());
@@ -35,7 +35,7 @@ constexpr void test(S orig, typename S::size_type pos, typename S::size_type n, 
 }
 
 template <class S>
-constexpr void test(S orig, typename S::size_type pos, typename S::size_type n, should_throw_exception_t) {
+consteval void test(S orig, typename S::size_type pos, typename S::size_type n, should_throw_exception_t) {
 #ifndef TEST_HAS_NO_EXCEPTIONS
   if (!std::is_constant_evaluated()) {
     try {
@@ -52,7 +52,7 @@ constexpr void test(S orig, typename S::size_type pos, typename S::size_type n, 
 }
 
 template <class S>
-constexpr void test_string() {
+consteval void test_string() {
   test<S>(STR(""), 0, 0, STR(""));
   test<S>(STR(""), 0, 1, STR(""));
   test<S>(STR(""), 1, 0, should_throw_exception);
@@ -70,19 +70,19 @@ constexpr void test_string() {
 }
 
 template <class CharT, class CharTraits>
-constexpr void test_allocators() {
+consteval void test_allocators() {
   test_string<std::basic_string<CharT, CharTraits, std::allocator<CharT>>>();
   test_string<std::basic_string<CharT, CharTraits, min_allocator<CharT>>>();
   test_string<std::basic_string<CharT, CharTraits, test_allocator<CharT>>>();
 }
 
 template <class CharT>
-constexpr void test_char_traits() {
+consteval void test_char_traits() {
   test_allocators<CharT, std::char_traits<CharT>>();
   test_allocators<CharT, constexpr_char_traits<CharT>>();
 }
 
-constexpr bool test() {
+consteval bool test() {
   test_char_traits<char>();
   test_char_traits<char16_t>();
   test_char_traits<char32_t>();
@@ -97,7 +97,7 @@ constexpr bool test() {
 }
 
 int main(int, char**) {
-  test();
+  //test();
   static_assert(test());
 
   return 0;

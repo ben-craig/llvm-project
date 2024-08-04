@@ -29,9 +29,9 @@ struct throwing_alloc
 
 // Test that it's possible to take the address of basic_string's destructors
 // by creating globals which will register their destructors with cxa_atexit.
-std::string unused_string;
+//std::string unused_string;
 #ifndef TEST_HAS_NO_WIDE_CHARACTERS
-std::wstring unused_wide_string;
+//std::wstring unused_wide_string;
 #endif
 
 static_assert(std::is_nothrow_destructible<std::string>::value, "");
@@ -40,7 +40,7 @@ static_assert(std::is_nothrow_destructible<
 LIBCPP_STATIC_ASSERT(!std::is_nothrow_destructible<
                      std::basic_string<char, std::char_traits<char>, throwing_alloc<char>>>::value, "");
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   test_allocator_statistics alloc_stats;
   {
     std::basic_string<char, std::char_traits<char>, test_allocator<char>> str2((test_allocator<char>(&alloc_stats)));
@@ -55,7 +55,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

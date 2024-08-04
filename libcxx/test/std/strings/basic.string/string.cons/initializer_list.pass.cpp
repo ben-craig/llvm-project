@@ -19,7 +19,7 @@
 #include "test_allocator.h"
 #include "min_allocator.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     std::string s = {'a', 'b', 'c'};
     assert(s == "abc");
@@ -50,7 +50,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

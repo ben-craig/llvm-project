@@ -34,3 +34,5 @@ static_assert(!std::ranges::view<std::string const>);
 static_assert(std::ranges::sized_range<std::string const>);
 static_assert(!std::ranges::borrowed_range<std::string const>);
 static_assert(!std::ranges::viewable_range<std::string const>);
+
+int main() {}

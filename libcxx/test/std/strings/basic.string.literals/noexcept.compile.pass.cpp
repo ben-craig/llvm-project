@@ -21,3 +21,4 @@ static_assert(!noexcept(std::operator""s(std::declval<const char32_t*>(), std::d
 #ifndef TEST_HAS_NO_WIDE_CHARACTERS
 static_assert(!noexcept(std::operator""s(std::declval<const wchar_t*>(), std::declval<int>())), "");
 #endif
+int main() {}

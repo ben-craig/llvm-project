@@ -25,7 +25,7 @@
 #include "min_allocator.h"
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(SV sv, std::size_t pos, std::size_t n)
 {
     typedef typename S::traits_type T;
@@ -59,7 +59,7 @@ test(SV sv, std::size_t pos, std::size_t n)
 }
 
 template <class S, class SV>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(SV sv, std::size_t pos, std::size_t n, const typename S::allocator_type& a)
 {
     typedef typename S::traits_type T;
@@ -91,7 +91,7 @@ test(SV sv, std::size_t pos, std::size_t n, const typename S::allocator_type& a)
 #endif
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef test_allocator<char> A;
     typedef std::basic_string_view<char, std::char_traits<char> > SV;
@@ -187,7 +187,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

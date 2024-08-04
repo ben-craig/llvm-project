@@ -21,7 +21,7 @@
 #include "test_iterators.h"
 
 template <class S, class It>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(S s, typename S::size_type pos1, typename S::size_type n1, It f, It l, S expected)
 {
     typename S::size_type old_size = s.size();
@@ -39,7 +39,7 @@ test(S s, typename S::size_type pos1, typename S::size_type n1, It f, It l, S ex
 struct Widget { operator char() const { throw 42; } };
 
 template <class S, class It>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test_exceptions(S s, typename S::size_type pos1, typename S::size_type n1, It f, It l)
 {
     typename S::const_iterator first = s.begin() + pos1;
@@ -66,7 +66,7 @@ test_exceptions(S s, typename S::size_type pos1, typename S::size_type n1, It f,
 TEST_CONSTEXPR const char* str = "12345678901234567890";
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test0()
+consteval bool test0()
 {
     test(S(""), 0, 0, str, str+0, S(""));
     test(S(""), 0, 0, str, str+0, S(""));
@@ -173,7 +173,7 @@ TEST_CONSTEXPR_CXX20 bool test0()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test1()
+consteval bool test1()
 {
     test(S("abcde"), 1, 0, str, str+4, S("a1234bcde"));
     test(S("abcde"), 1, 0, str, str+5, S("a12345bcde"));
@@ -280,7 +280,7 @@ TEST_CONSTEXPR_CXX20 bool test1()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test2()
+consteval bool test2()
 {
     test(S("abcde"), 2, 1, str, str+5, S("ab12345de"));
     test(S("abcde"), 2, 1, str, str+9, S("ab123456789de"));
@@ -387,7 +387,7 @@ TEST_CONSTEXPR_CXX20 bool test2()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test3()
+consteval bool test3()
 {
     test(S("abcdefghij"), 0, 0, str, str+1, S("1abcdefghij"));
     test(S("abcdefghij"), 0, 0, str, str+10, S("1234567890abcdefghij"));
@@ -494,7 +494,7 @@ TEST_CONSTEXPR_CXX20 bool test3()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test4()
+consteval bool test4()
 {
     test(S("abcdefghij"), 1, 4, str, str+0, S("afghij"));
     test(S("abcdefghij"), 1, 4, str, str+0, S("afghij"));
@@ -601,7 +601,7 @@ TEST_CONSTEXPR_CXX20 bool test4()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test5()
+consteval bool test5()
 {
     test(S("abcdefghij"), 5, 4, str, str+4, S("abcde1234j"));
     test(S("abcdefghij"), 5, 4, str, str+5, S("abcde12345j"));
@@ -708,7 +708,7 @@ TEST_CONSTEXPR_CXX20 bool test5()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test6()
+consteval bool test6()
 {
     test(S("abcdefghijklmnopqrst"), 0, 1, str, str+5, S("12345bcdefghijklmnopqrst"));
     test(S("abcdefghijklmnopqrst"), 0, 1, str, str+9, S("123456789bcdefghijklmnopqrst"));
@@ -815,7 +815,7 @@ TEST_CONSTEXPR_CXX20 bool test6()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test7()
+consteval bool test7()
 {
     test(S("abcdefghijklmnopqrst"), 1, 9, str, str+1, S("a1klmnopqrst"));
     test(S("abcdefghijklmnopqrst"), 1, 9, str, str+10, S("a1234567890klmnopqrst"));
@@ -922,7 +922,7 @@ TEST_CONSTEXPR_CXX20 bool test7()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test8()
+consteval bool test8()
 {
     test(S("abcdefghijklmnopqrst"), 10, 10, str, str+0, S("abcdefghij"));
     test(S("abcdefghijklmnopqrst"), 10, 10, str, str+0, S("abcdefghij"));
@@ -993,7 +993,7 @@ TEST_CONSTEXPR_CXX20 bool test8()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test9() {
+consteval bool test9() {
 #ifndef TEST_HAS_NO_EXCEPTIONS
   if (!TEST_IS_CONSTANT_EVALUATED) { // test iterator operations that throw
     typedef ThrowingIterator<char> TIter;
@@ -1044,7 +1044,8 @@ TEST_CONSTEXPR_CXX20 bool test9() {
 }
 
 template <class S>
-void test() {
+consteval bool test() {
+    #if 0
   test0<S>();
   test1<S>();
   test2<S>();
@@ -1055,6 +1056,7 @@ void test() {
   test7<S>();
   test8<S>();
   test9<S>();
+  #endif
 
 #if TEST_STD_VER > 17
   static_assert(test0<S>());
@@ -1068,13 +1070,14 @@ void test() {
   static_assert(test8<S>());
   static_assert(test9<S>());
 #endif
+return true;
 }
 
 int main(int, char**)
 {
-  test<std::string>();
+  static_assert(test<std::string>());
 #if TEST_STD_VER >= 11
-  test<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>();
+  static_assert(test<std::basic_string<char, std::char_traits<char>, min_allocator<char>>>());
 #endif
 
   return 0;

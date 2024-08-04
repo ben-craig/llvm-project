@@ -18,7 +18,7 @@
 
 #include "test_macros.h"
 
-TEST_CONSTEXPR_CXX20 int sign(int x)
+consteval int sign(int x)
 {
     if (x == 0)
         return 0;
@@ -28,7 +28,7 @@ TEST_CONSTEXPR_CXX20 int sign(int x)
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, typename S::size_type pos, typename S::size_type n1,
      const typename S::value_type* str, typename S::size_type n2, int x)
 {
@@ -51,7 +51,7 @@ test(const S& s, typename S::size_type pos, typename S::size_type n1,
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test0()
+consteval bool test0()
 {
     test(S(""), 0, 0, "", 0, 0);
     test(S(""), 0, 0, "abcde", 0, 0);
@@ -158,7 +158,7 @@ TEST_CONSTEXPR_CXX20 bool test0()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test1()
+consteval bool test1()
 {
     test(S("abcde"), 0, 4, "abcde", 4, 0);
     test(S("abcde"), 0, 4, "abcde", 5, -1);
@@ -265,7 +265,7 @@ TEST_CONSTEXPR_CXX20 bool test1()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test2()
+consteval bool test2()
 {
     test(S("abcde"), 1, 3, "abcdefghij", 5, 1);
     test(S("abcde"), 1, 3, "abcdefghij", 9, 1);
@@ -372,7 +372,7 @@ TEST_CONSTEXPR_CXX20 bool test2()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test3()
+consteval bool test3()
 {
     test(S("abcde"), 2, 3, "abcdefghijklmnopqrst", 1, 2);
     test(S("abcde"), 2, 3, "abcdefghijklmnopqrst", 10, 2);
@@ -479,7 +479,7 @@ TEST_CONSTEXPR_CXX20 bool test3()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test4()
+consteval bool test4()
 {
     test(S("abcde"), 6, 0, "", 0, 0);
     test(S("abcde"), 6, 0, "abcde", 0, 0);
@@ -586,7 +586,7 @@ TEST_CONSTEXPR_CXX20 bool test4()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test5()
+consteval bool test5()
 {
     test(S("abcdefghij"), 0, 11, "abcde", 4, 6);
     test(S("abcdefghij"), 0, 11, "abcde", 5, 5);
@@ -693,7 +693,7 @@ TEST_CONSTEXPR_CXX20 bool test5()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test6()
+consteval bool test6()
 {
     test(S("abcdefghij"), 1, 10, "abcdefghij", 5, 1);
     test(S("abcdefghij"), 1, 10, "abcdefghij", 9, 1);
@@ -800,7 +800,7 @@ TEST_CONSTEXPR_CXX20 bool test6()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test7()
+consteval bool test7()
 {
     test(S("abcdefghij"), 5, 6, "abcdefghijklmnopqrst", 1, 5);
     test(S("abcdefghij"), 5, 6, "abcdefghijklmnopqrst", 10, 5);
@@ -907,7 +907,7 @@ TEST_CONSTEXPR_CXX20 bool test7()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test8()
+consteval bool test8()
 {
     test(S("abcdefghijklmnopqrst"), 0, 0, "", 0, 0);
     test(S("abcdefghijklmnopqrst"), 0, 0, "abcde", 0, 0);
@@ -1014,7 +1014,7 @@ TEST_CONSTEXPR_CXX20 bool test8()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test9()
+consteval bool test9()
 {
     test(S("abcdefghijklmnopqrst"), 1, 0, "abcde", 4, -4);
     test(S("abcdefghijklmnopqrst"), 1, 0, "abcde", 5, -5);
@@ -1121,7 +1121,7 @@ TEST_CONSTEXPR_CXX20 bool test9()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test10()
+consteval bool test10()
 {
     test(S("abcdefghijklmnopqrst"), 10, 0, "abcdefghij", 5, -5);
     test(S("abcdefghijklmnopqrst"), 10, 0, "abcdefghij", 9, -9);
@@ -1228,7 +1228,7 @@ TEST_CONSTEXPR_CXX20 bool test10()
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 bool test11()
+consteval bool test11()
 {
     test(S("abcdefghijklmnopqrst"), 19, 0, "abcdefghijklmnopqrst", 1, -1);
     test(S("abcdefghijklmnopqrst"), 19, 0, "abcdefghijklmnopqrst", 10, -10);

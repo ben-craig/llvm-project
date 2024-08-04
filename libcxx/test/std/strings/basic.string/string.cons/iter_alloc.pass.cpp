@@ -24,7 +24,7 @@
 #include "min_allocator.h"
 
 template <class It>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(It first, It last)
 {
     typedef typename std::iterator_traits<It>::value_type charT;
@@ -44,7 +44,7 @@ test(It first, It last)
 }
 
 template <class It, class A>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(It first, It last, const A& a)
 {
     typedef typename std::iterator_traits<It>::value_type charT;
@@ -62,7 +62,7 @@ test(It first, It last, const A& a)
     assert(s2.capacity() >= s2.size());
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef test_allocator<char> A;
     const char* s = "12345678901234567890123456789012345678901234567890";
@@ -136,7 +136,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif

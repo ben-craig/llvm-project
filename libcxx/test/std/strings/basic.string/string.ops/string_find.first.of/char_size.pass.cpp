@@ -17,7 +17,7 @@
 #include "min_allocator.h"
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, typename S::value_type c, typename S::size_type pos,
      typename S::size_type x)
 {
@@ -28,7 +28,7 @@ test(const S& s, typename S::value_type c, typename S::size_type pos,
 }
 
 template <class S>
-TEST_CONSTEXPR_CXX20 void
+consteval void
 test(const S& s, typename S::value_type c, typename S::size_type x)
 {
     LIBCPP_ASSERT_NOEXCEPT(s.find_first_of(c));
@@ -37,7 +37,7 @@ test(const S& s, typename S::value_type c, typename S::size_type x)
         assert(x < s.size());
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef std::string S;
     test(S(""), 'e', 0, S::npos);
@@ -102,7 +102,7 @@ TEST_CONSTEXPR_CXX20 bool test() {
 
 int main(int, char**)
 {
-  test();
+  //test();
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif
