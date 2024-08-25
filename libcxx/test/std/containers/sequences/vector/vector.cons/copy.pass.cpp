@@ -30,7 +30,7 @@ test(const C& x)
     LIBCPP_ASSERT(is_contiguous_container_asan_correct(c));
 }
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     {
         int a[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 1, 0};
         int* an = a + sizeof(a)/sizeof(a[0]);

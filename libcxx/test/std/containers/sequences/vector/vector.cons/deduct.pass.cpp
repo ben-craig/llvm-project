@@ -28,7 +28,7 @@
 
 struct A {};
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
 
 //  Test the explicit deduction guides
     {

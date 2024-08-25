@@ -30,7 +30,7 @@ test(typename C::size_type n, const typename C::value_type& x)
         assert(*i == x);
 }
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     test<std::vector<int> >(0, 3);
     test<std::vector<int> >(50, 3);
     // Add 1 for implementations that dynamically allocate a container proxy.

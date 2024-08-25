@@ -79,3 +79,5 @@ static_assert( std::indirectly_copyable_storable<const_iterator, reverse_iterato
 static_assert(!std::indirectly_copyable<const_iterator, const_reverse_iterator>);
 static_assert(!std::indirectly_copyable_storable<const_iterator, const_reverse_iterator>);
 static_assert(!std::indirectly_swappable<const_iterator, const_iterator>);
+
+int main() {}

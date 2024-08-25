@@ -18,7 +18,7 @@
 #include "test_allocator.h"
 #include "min_allocator.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         std::vector<bool, test_allocator<bool> > l(test_allocator<bool>(5));

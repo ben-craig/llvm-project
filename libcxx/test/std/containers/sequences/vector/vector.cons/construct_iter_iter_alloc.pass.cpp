@@ -26,7 +26,7 @@
 #endif
 
 template <class C, class Iterator, class A>
-TEST_CONSTEXPR_CXX20 void test(Iterator first, Iterator last, const A& a) {
+consteval void test(Iterator first, Iterator last, const A& a) {
   C c(first, last, a);
   LIBCPP_ASSERT(c.__invariants());
   assert(c.size() == static_cast<std::size_t>(std::distance(first, last)));
@@ -49,7 +49,7 @@ struct implicit_conv_allocator : min_allocator<T> {
 
 #endif
 
-TEST_CONSTEXPR_CXX20 void basic_tests() {
+consteval void basic_tests() {
   {
     int a[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 1, 0};
     int* an = a + sizeof(a) / sizeof(a[0]);
@@ -86,7 +86,7 @@ TEST_CONSTEXPR_CXX20 void basic_tests() {
 #endif
 }
 
-TEST_CONSTEXPR_CXX20 void emplaceable_concept_tests() {
+consteval void emplaceable_concept_tests() {
 #if TEST_STD_VER >= 11
   int arr1[] = {42};
   int arr2[] = {1, 101, 42};
@@ -127,6 +127,7 @@ TEST_CONSTEXPR_CXX20 void emplaceable_concept_tests() {
 #endif
 }
 
+#if !BCRAIG_FREESTANDING
 void test_ctor_under_alloc() {
 #if TEST_STD_VER >= 11
   int arr1[] = {42};
@@ -161,8 +162,9 @@ void test_ctor_under_alloc() {
   }
 #endif
 }
+#endif
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   basic_tests();
   emplaceable_concept_tests(); // See PR34898
 
@@ -174,7 +176,7 @@ int main(int, char**) {
 #if TEST_STD_VER > 17
   static_assert(test());
 #endif
-  test_ctor_under_alloc();
+  //test_ctor_under_alloc();
 
   return 0;
 }

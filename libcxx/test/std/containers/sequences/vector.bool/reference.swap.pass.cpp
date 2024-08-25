@@ -16,7 +16,7 @@
 
 #include "test_macros.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
 
     bool a[] = {false, true, false, true};

@@ -26,7 +26,7 @@ struct S {};
 void make_move_iterator(S*) {}
 }
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         typedef std::vector<int> V;

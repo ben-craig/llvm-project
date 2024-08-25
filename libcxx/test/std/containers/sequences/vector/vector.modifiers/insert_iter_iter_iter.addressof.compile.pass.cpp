@@ -19,7 +19,7 @@
 #include "operator_hijacker.h"
 #include "test_iterators.h"
 
-void test(cpp17_input_iterator<operator_hijacker*> i) {
+consteval void test(cpp17_input_iterator<operator_hijacker*> i) {
   {
     std::vector<operator_hijacker> v;
     v.insert(v.end(), i, i);
@@ -29,3 +29,5 @@ void test(cpp17_input_iterator<operator_hijacker*> i) {
     v.insert(v.end(), v.begin(), v.end());
   }
 }
+
+int main() {}

@@ -18,7 +18,7 @@
 #include "min_allocator.h"
 #include "asan_testing.h"
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     {
         std::vector<int> v;
         v.reserve(10);

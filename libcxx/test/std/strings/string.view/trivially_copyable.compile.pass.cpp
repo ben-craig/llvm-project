@@ -26,3 +26,5 @@ static_assert(std::is_trivially_copyable<std::basic_string_view<char8_t> >::valu
 #endif
 static_assert(std::is_trivially_copyable<std::basic_string_view<char16_t> >::value, "");
 static_assert(std::is_trivially_copyable<std::basic_string_view<char32_t> >::value, "");
+
+int main() {}

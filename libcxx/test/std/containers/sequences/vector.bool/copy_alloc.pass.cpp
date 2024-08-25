@@ -27,7 +27,7 @@ TEST_CONSTEXPR_CXX20 void test(const C& x, const typename C::allocator_type& a)
     assert(c == x);
 }
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         bool a[] = {0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0};

@@ -30,7 +30,7 @@ struct some_alloc
     void allocate(size_t);
 };
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     {
         typedef std::vector<MoveOnly> C;
         static_assert(std::is_nothrow_default_constructible<C>::value, "");

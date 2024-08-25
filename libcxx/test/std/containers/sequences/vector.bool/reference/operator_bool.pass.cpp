@@ -16,7 +16,7 @@
 
 #include "test_macros.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   std::vector<bool> vec;
   typedef std::vector<bool>::reference Ref;
   static_assert(std::is_convertible<Ref, bool>::value, "");

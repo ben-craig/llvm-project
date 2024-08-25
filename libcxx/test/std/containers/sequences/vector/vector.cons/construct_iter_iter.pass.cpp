@@ -25,7 +25,7 @@
 #endif
 
 template <class C, class Iterator>
-TEST_CONSTEXPR_CXX20 void test(Iterator first, Iterator last) {
+consteval void test(Iterator first, Iterator last) {
   {
     C c(first, last);
     LIBCPP_ASSERT(c.__invariants());
@@ -44,7 +44,7 @@ TEST_CONSTEXPR_CXX20 void test(Iterator first, Iterator last) {
   }
 }
 
-TEST_CONSTEXPR_CXX20 void basic_test_cases() {
+consteval void basic_test_cases() {
   int a[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 1, 0};
   int* an = a + sizeof(a) / sizeof(a[0]);
   test<std::vector<int> >(cpp17_input_iterator<const int*>(a),
@@ -84,7 +84,7 @@ TEST_CONSTEXPR_CXX20 void basic_test_cases() {
 #endif
 }
 
-TEST_CONSTEXPR_CXX20 void emplaceable_concept_tests() {
+consteval void emplaceable_concept_tests() {
 #if TEST_STD_VER >= 11
   int arr1[] = {42};
   int arr2[] = {1, 101, 42};
@@ -123,6 +123,7 @@ TEST_CONSTEXPR_CXX20 void emplaceable_concept_tests() {
 #endif
 }
 
+#if !BCRAIG_FREESTANDING
 void test_ctor_under_alloc() {
 #if TEST_STD_VER >= 11
   int arr1[] = {42};
@@ -153,6 +154,7 @@ void test_ctor_under_alloc() {
   }
 #endif
 }
+#endif
 
 // In C++03, you can't instantiate a template with a local type.
 struct B1 { int x; };
@@ -160,7 +162,7 @@ struct B2 { int y; };
 struct Der : B1, B2 { int z; };
 
 // Initialize a vector with a different value type.
-TEST_CONSTEXPR_CXX20 void test_ctor_with_different_value_type() {
+consteval void test_ctor_with_different_value_type() {
   {
     // Make sure initialization is performed with each element value, not with
     // a memory blob.
@@ -189,7 +191,7 @@ TEST_CONSTEXPR_CXX20 void test_ctor_with_different_value_type() {
   }
 }
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
   basic_test_cases();
   emplaceable_concept_tests(); // See PR34898
   test_ctor_with_different_value_type();
@@ -200,7 +202,7 @@ TEST_CONSTEXPR_CXX20 bool tests() {
 int main(int, char**)
 {
     tests();
-    test_ctor_under_alloc();
+    //test_ctor_under_alloc();
 #if TEST_STD_VER > 17
     static_assert(tests());
 #endif

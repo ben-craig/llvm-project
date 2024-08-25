@@ -33,7 +33,7 @@ struct Throws {
 bool Throws::sThrows = false;
 #endif
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     int a1[] = {1, 2, 3};
     {

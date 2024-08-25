@@ -26,7 +26,7 @@ struct Nasty {
     int i_;
 };
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         const std::vector<int> v;

@@ -22,7 +22,7 @@
 #include "test_macros.h"
 #include "min_allocator.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     using IterRefT = std::iterator_traits<std::vector<bool>::iterator>::reference;
     ASSERT_SAME_TYPE(IterRefT, std::vector<bool>::reference);

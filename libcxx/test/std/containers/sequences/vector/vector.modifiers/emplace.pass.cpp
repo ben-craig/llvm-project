@@ -52,7 +52,7 @@ public:
     TEST_CONSTEXPR_CXX14 double getd() const {return d_;}
 };
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         std::vector<A> c;

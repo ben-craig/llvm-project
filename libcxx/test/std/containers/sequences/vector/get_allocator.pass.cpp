@@ -18,7 +18,7 @@
 #include "test_allocator.h"
 #include "test_macros.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
     {
         std::allocator<int> alloc;
         const std::vector<int> v(alloc);

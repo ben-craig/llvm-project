@@ -19,3 +19,5 @@ LIBCPP_STATIC_ASSERT(std::is_trivially_move_constructible<Ref>::value, "");
 LIBCPP_STATIC_ASSERT(!std::is_trivially_copy_assignable<Ref>::value, "");
 LIBCPP_STATIC_ASSERT(!std::is_trivially_move_assignable<Ref>::value, "");
 LIBCPP_STATIC_ASSERT(std::is_trivially_destructible<Ref>::value, "");
+
+int main() {}

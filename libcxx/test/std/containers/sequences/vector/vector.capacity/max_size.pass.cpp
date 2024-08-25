@@ -19,7 +19,7 @@
 #include "test_macros.h"
 
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   {
     typedef limited_allocator<int, 10> A;
     typedef std::vector<int, A> C;

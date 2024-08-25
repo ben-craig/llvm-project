@@ -13,10 +13,11 @@
 #include <cstring>
 #include <string>
 #include <cassert>
+#include <string_view>
 
 #include "test_macros.h"
 
-int main(int, char**)
+consteval void test()
 {
     static_assert((std::is_base_of<std::logic_error, std::length_error>::value),
                  "std::is_base_of<std::logic_error, std::length_error>::value");
@@ -25,11 +26,11 @@ int main(int, char**)
     {
     const char* msg = "length_error message";
     std::length_error e(msg);
-    assert(std::strcmp(e.what(), msg) == 0);
+    assert(std::string_view(e.what()) == std::string_view(msg));
     std::length_error e2(e);
-    assert(std::strcmp(e2.what(), msg) == 0);
+    assert(std::string_view(e2.what()) == std::string_view(msg));
     e2 = e;
-    assert(std::strcmp(e2.what(), msg) == 0);
+    assert(std::string_view(e2.what()) == std::string_view(msg));
     }
     {
     std::string msg("another length_error message");
@@ -40,6 +41,10 @@ int main(int, char**)
     e2 = e;
     assert(e2.what() == msg);
     }
+}
 
+int main(int, char**)
+{
+  test();
   return 0;
 }

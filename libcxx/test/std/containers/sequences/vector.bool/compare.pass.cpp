@@ -20,7 +20,7 @@
 
 #include "test_comparisons.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
     typedef std::vector<bool> VB;
     {
         const VB v1, v2;

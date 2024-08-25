@@ -58,7 +58,7 @@ TEST_CONSTEXPR_CXX20 void test1(const typename C::allocator_type& a)
     LIBCPP_ASSERT(is_contiguous_container_asan_correct(c));
 }
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     {
     test0<std::vector<int> >();
     test0<std::vector<NotConstructible> >();

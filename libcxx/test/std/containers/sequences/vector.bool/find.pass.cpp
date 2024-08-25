@@ -20,7 +20,7 @@
 
 #include "test_macros.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         for (unsigned i = 1; i < 256; ++i)

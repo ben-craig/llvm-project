@@ -21,7 +21,7 @@
 #include "min_allocator.h"
 #include "asan_testing.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     test_allocator_statistics alloc_stats;
     {

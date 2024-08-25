@@ -24,7 +24,7 @@ TEST_CONSTEXPR_CXX20 void test_contiguous(const C &c)
         assert ( *(c.begin() + static_cast<typename C::difference_type>(i)) == *(std::addressof(*c.begin()) + i));
 }
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
     typedef int T;

@@ -17,4 +17,9 @@
 
 #include <memory>
 
-std::allocator<void> a;
+consteval void test() {
+    std::allocator<void> a;
+    (void)a;
+}
+
+int main() {test();}

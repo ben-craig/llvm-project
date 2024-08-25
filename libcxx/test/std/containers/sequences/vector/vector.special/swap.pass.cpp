@@ -19,7 +19,7 @@
 #include "min_allocator.h"
 #include "asan_testing.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         int a1[] = {1, 3, 7, 9, 10};

@@ -33,3 +33,5 @@ static_assert((std::is_same<std::allocator<void>::const_pointer, const void*>::v
 static_assert((std::is_same<std::allocator<void>::value_type, void>::value), "");
 static_assert((std::is_same<std::allocator<void>::rebind<int>::other,
                             std::allocator<int> >::value), "");
+
+int main() {}

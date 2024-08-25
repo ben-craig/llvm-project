@@ -20,7 +20,7 @@
 #include "test_iterators.h"
 #include "min_allocator.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         std::vector<bool> v(100);

@@ -23,7 +23,7 @@
 #endif
 
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
 #if TEST_STD_VER >= 11
   int arr1[] = {42};
   int arr2[] = {1, 101, 42};

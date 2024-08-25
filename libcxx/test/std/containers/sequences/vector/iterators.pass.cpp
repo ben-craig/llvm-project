@@ -28,7 +28,7 @@ struct A
     int second;
 };
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
         typedef int T;

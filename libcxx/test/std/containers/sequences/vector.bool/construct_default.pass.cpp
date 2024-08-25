@@ -57,7 +57,7 @@ TEST_CONSTEXPR_CXX20 void test1(const typename C::allocator_type& a)
     assert(c.get_allocator() == a);
 }
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
     test0<std::vector<bool> >();

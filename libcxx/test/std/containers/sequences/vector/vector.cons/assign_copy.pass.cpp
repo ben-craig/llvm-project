@@ -17,7 +17,7 @@
 #include "min_allocator.h"
 #include "allocators.h"
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     {
         std::vector<int, test_allocator<int> > l(3, 2, test_allocator<int>(5));
         std::vector<int, test_allocator<int> > l2(l, test_allocator<int>(3));

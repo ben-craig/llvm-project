@@ -55,7 +55,7 @@ struct some_alloc2
     typedef std::true_type is_always_equal;
 };
 
-void test()
+consteval void test()
 {
     {
         typedef std::vector<MoveOnly> C;
@@ -88,3 +88,5 @@ void test()
     }
 #endif
 }
+
+int main() {}

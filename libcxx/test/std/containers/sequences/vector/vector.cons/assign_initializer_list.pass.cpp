@@ -31,7 +31,7 @@ TEST_CONSTEXPR_CXX20 void test(Vec &v)
     assert(v[3] == 6);
 }
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     {
     typedef std::vector<int> V;
     V d1;

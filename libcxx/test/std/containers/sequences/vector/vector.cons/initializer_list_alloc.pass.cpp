@@ -20,7 +20,7 @@
 #include "min_allocator.h"
 #include "asan_testing.h"
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     {
     std::vector<int, test_allocator<int>> d({3, 4, 5, 6}, test_allocator<int>(3));

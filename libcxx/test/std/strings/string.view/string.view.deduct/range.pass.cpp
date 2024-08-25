@@ -20,7 +20,7 @@
 #include "test_macros.h"
 
 template<class CharT>
-void test() {
+consteval void test() {
   auto val = MAKE_STRING(CharT, "test");
   auto sv = std::basic_string_view(val);
   ASSERT_SAME_TYPE(decltype(sv), std::basic_string_view<CharT>);
@@ -28,7 +28,7 @@ void test() {
   assert(sv.data() == val.data());
 }
 
-void test() {
+consteval void test() {
   test<char>();
 #ifndef TEST_HAS_NO_WIDE_CHARACTERS
   test<wchar_t>();
@@ -40,8 +40,8 @@ void test() {
 
   struct Widget {
     const char16_t *data_ = u"foo";
-    contiguous_iterator<const char16_t*> begin() const { return contiguous_iterator<const char16_t*>(data_); }
-    contiguous_iterator<const char16_t*> end() const { return contiguous_iterator<const char16_t*>(data_ + 3); }
+    constexpr contiguous_iterator<const char16_t*> begin() const { return contiguous_iterator<const char16_t*>(data_); }
+    constexpr contiguous_iterator<const char16_t*> end() const { return contiguous_iterator<const char16_t*>(data_ + 3); }
   };
   std::basic_string_view bsv = std::basic_string_view(Widget());
   ASSERT_SAME_TYPE(decltype(bsv), std::basic_string_view<char16_t>);

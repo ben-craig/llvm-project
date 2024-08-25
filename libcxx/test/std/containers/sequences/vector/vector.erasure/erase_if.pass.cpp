@@ -20,14 +20,14 @@
 #include "min_allocator.h"
 
 template <class S, class Pred>
-TEST_CONSTEXPR_CXX20 void test0(S s, Pred p, S expected, size_t expected_erased_count) {
+consteval void test0(S s, Pred p, S expected, size_t expected_erased_count) {
   ASSERT_SAME_TYPE(typename S::size_type, decltype(std::erase_if(s, p)));
   assert(expected_erased_count == std::erase_if(s, p));
   assert(s == expected);
 }
 
 template <typename S>
-TEST_CONSTEXPR_CXX20 void test()
+consteval void test()
 {
     auto is1 = [](auto v) { return v == 1;};
     auto is2 = [](auto v) { return v == 2;};
@@ -65,7 +65,7 @@ TEST_CONSTEXPR_CXX20 void test()
     test0(S({1, 2, 3}), False, S({1, 2, 3}), 0);
 }
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     test<std::vector<int>>();
     test<std::vector<int, min_allocator<int>>> ();

@@ -112,7 +112,7 @@ TEST_CONSTEXPR_CXX20 void test() {
     ASSERT_SAME_TYPE(typename Vector::const_reference, decltype(cc.back()));
 }
 
-TEST_CONSTEXPR_CXX20 bool tests() {
+consteval bool tests() {
     test<std::vector<int> >();
 #if TEST_STD_VER >= 11
     test<std::vector<int, min_allocator<int> > >();

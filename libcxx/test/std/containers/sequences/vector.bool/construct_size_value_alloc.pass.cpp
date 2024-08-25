@@ -30,7 +30,7 @@ TEST_CONSTEXPR_CXX20 void test(typename C::size_type n,
         assert(*i == x);
 }
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     test<std::vector<bool> >(50, true, std::allocator<bool>());
 #if TEST_STD_VER >= 11

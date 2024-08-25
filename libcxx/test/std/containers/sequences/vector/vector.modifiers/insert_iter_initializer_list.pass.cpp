@@ -54,7 +54,7 @@ void test_throwing() {
 }
 #endif // TEST_HAS_NO_EXCEPTIONS
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
   {
     std::vector<int> d(10, 1);

@@ -67,7 +67,7 @@ TEST_CONSTEXPR_CXX20 void check_vector_reverse_iterators() {
     }
 }
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
     check_vector_reverse_iterators<std::vector<int> >();
 #if TEST_STD_VER >= 11
     check_vector_reverse_iterators<std::vector<int, min_allocator<int> > >();

@@ -13,7 +13,7 @@
 
 #include "test_macros.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
   using CRefT = std::vector<bool>::const_reference;
 #if !defined(_LIBCPP_VERSION) || defined(_LIBCPP_ABI_BITSET_VECTOR_BOOL_CONST_SUBSCRIPT_RETURN_BOOL)
   ASSERT_SAME_TYPE(CRefT, bool);

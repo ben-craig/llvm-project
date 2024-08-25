@@ -19,7 +19,7 @@
 #include "test_macros.h"
 #include "operator_hijacker.h"
 
-void test() {
+consteval void test() {
   {
     std::vector<operator_hijacker> vo;
     std::vector<operator_hijacker> v(std::move(vo));
@@ -29,3 +29,5 @@ void test() {
     std::vector<operator_hijacker> v(std::move(vo), std::allocator<operator_hijacker>());
   }
 }
+
+int main() {test();}

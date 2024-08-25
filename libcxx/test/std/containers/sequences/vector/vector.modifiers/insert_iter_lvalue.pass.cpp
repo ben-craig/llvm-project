@@ -19,7 +19,7 @@
 #include "min_allocator.h"
 #include "asan_testing.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
 
     {
         std::vector<int> v(100);

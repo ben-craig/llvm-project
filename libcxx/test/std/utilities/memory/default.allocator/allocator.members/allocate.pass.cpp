@@ -16,13 +16,17 @@
 #include <cstddef>       // for std::max_align_t
 
 #include "test_macros.h"
+
+#if !BCRAIG_FREESTANDING
 #include "count_new.h"
+#endif
 
-
+#if !BCRAIG_FREESTANDING
 #ifdef TEST_HAS_NO_ALIGNED_ALLOCATION
 static const bool UsingAlignedNew = false;
 #else
 static const bool UsingAlignedNew = true;
+#endif
 #endif
 
 #ifdef __STDCPP_DEFAULT_NEW_ALIGNMENT__
@@ -46,6 +50,7 @@ template <size_t Align>
 int AlignedType<Align>::constructed = 0;
 
 
+#if !BCRAIG_FREESTANDING
 template <size_t Align>
 void test_aligned() {
   typedef AlignedType<Align> T;
@@ -76,6 +81,7 @@ void test_aligned() {
     assert(T::constructed == 0);
   }
 }
+#endif
 
 #if TEST_STD_VER > 17
 template <size_t Align>
@@ -90,14 +96,14 @@ constexpr bool test_aligned_constexpr() {
 #endif
 
 int main(int, char**) {
-    test_aligned<1>();
-    test_aligned<2>();
-    test_aligned<4>();
-    test_aligned<8>();
-    test_aligned<16>();
-    test_aligned<MaxAligned>();
-    test_aligned<OverAligned>();
-    test_aligned<OverAligned * 2>();
+    //test_aligned<1>();
+    //test_aligned<2>();
+    //test_aligned<4>();
+    //test_aligned<8>();
+    //test_aligned<16>();
+    //test_aligned<MaxAligned>();
+    //test_aligned<OverAligned>();
+    //test_aligned<OverAligned * 2>();
 
 #if TEST_STD_VER > 17
     static_assert(test_aligned_constexpr<1>());

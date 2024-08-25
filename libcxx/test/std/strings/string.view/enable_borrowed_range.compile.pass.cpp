@@ -24,3 +24,5 @@ void test() {
   static_assert(enable_borrowed_range<std::basic_string_view<wchar_t> >);
   static_assert(enable_borrowed_range<std::basic_string_view<char8_t> >);
 }
+
+int main() {}

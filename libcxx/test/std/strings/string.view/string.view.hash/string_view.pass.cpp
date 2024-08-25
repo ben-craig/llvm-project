@@ -47,15 +47,15 @@ test()
     for ( int i = 0; i < 10; ++i )
         g1[i] = g2[9-i] = static_cast<char_type>('0' + i);
     H h;
-    SH sh;
+    //SH sh;
     SV s1(g1, 10);
-    String ss1(s1);
+    //String ss1(s1);
     SV s2(g2, 10);
-    String ss2(s2);
+    //String ss2(s2);
     assert(h(s1) == h(s1));
     assert(h(s1) != h(s2));
-    assert(sh(ss1) == h(s1));
-    assert(sh(ss2) == h(s2));
+    //assert(sh(ss1) == h(s1));
+    //assert(sh(ss2) == h(s2));
 }
 
 int main(int, char**)

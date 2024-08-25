@@ -18,3 +18,5 @@
 static_assert(!std::is_convertible_v<decltype(nullptr), std::string_view>);
 static_assert(!std::is_constructible_v<std::string_view, decltype(nullptr)>);
 static_assert(!std::is_assignable_v<std::string_view, decltype(nullptr)>);
+
+int main() {}

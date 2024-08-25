@@ -14,15 +14,27 @@
 
 #include "test_macros.h"
 
-int main(int, char**)
+#if BCRAIG_FREESTANDING
+// Nopped, never calling, only needed to make virtual dtors work
+void operator delete(void * p) noexcept
+{}
+#endif
+
+constexpr bool test()
 {
-    static_assert(std::is_polymorphic<std::exception>::value,
-                 "std::is_polymorphic<std::exception>::value");
     std::exception b;
     std::exception b2 = b;
     b2 = b;
     const char* w = b2.what();
     assert(w);
+    return true;
+}
 
+int main(int, char**)
+{
+    static_assert(std::is_polymorphic<std::exception>::value,
+                 "std::is_polymorphic<std::exception>::value");
+    test();
+    static_assert(test());
   return 0;
 }

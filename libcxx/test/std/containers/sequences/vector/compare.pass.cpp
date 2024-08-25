@@ -20,7 +20,7 @@
 
 #include "test_comparisons.h"
 
-TEST_CONSTEXPR_CXX20 bool test() {
+consteval bool test() {
     {
         const std::vector<int> c1, c2;
         assert(testComparisons(c1, c2, true, false));

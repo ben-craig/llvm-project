@@ -29,7 +29,7 @@ TEST_CONSTEXPR_CXX20 void test(Iterator first, Iterator last)
         assert(*i == *first);
 }
 
-TEST_CONSTEXPR_CXX20 bool tests()
+consteval bool tests()
 {
     bool a[] = {0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0};
     bool* an = a + sizeof(a)/sizeof(a[0]);
